@@ -10,7 +10,7 @@
     <meta name="keywords"  content="到处挖坑的小智 | Artificial Intelligence | EndPoint | Programmer">
     <meta name="theme-color" content="#000000">
     
-    <title>大家好，我叫Daniel - 明智的博客 | About Daniel</title>
+    <title>在 Swift 中使用 IBInspectable - 明智的博客 | About Daniel</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -22,7 +22,7 @@
     <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="http://localhost:4000/2017/10/04/Good-Day/">
+    <link rel="canonical" href="http://localhost:4000/backup/2017-05-05-%E5%9C%A8-Swift-%E4%B8%AD%E4%BD%BF%E7%94%A8-IBInspectable/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -334,13 +334,13 @@
 
     <!-- Image to hack wechat -->
 <!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
-<!-- <img src="/img/home-bg-art.jpg" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-swift.jpg" width="0" height="0"> -->
 
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
         position: relative;
-        background-image: url('/img/home-bg-art.jpg')
+        background-image: url('/img/post-bg-swift.jpg')
     }
 
     
@@ -357,15 +357,15 @@
                         
                         <a class="tag" href="/tags/#Swift" title="Swift">Swift</a>
                         
-                        <a class="tag" href="/tags/#GCD" title="GCD">GCD</a>
+                        <a class="tag" href="/tags/#IBInspectable" title="IBInspectable">IBInspectable</a>
                         
                     </div>
-                    <h1>大家好，我叫Daniel</h1>
+                    <h1>在 Swift 中使用 IBInspectable</h1>
                     
                     
-                    <h2 class="subheading">2017.12.13 我决定换个新英文名，就叫Daniel.</h2>
+                    <h2 class="subheading">IBInspectable 在 Swift 中的实际应用</h2>
                     
-                    <span class="meta">Posted by Daniel on October 4, 2017</span>
+                    <span class="meta">Posted by BY on May 5, 2017</span>
                 </div>
             </div>
         </div>
@@ -383,82 +383,152 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-				<h2 id="dispatchqueue">DispatchQueue</h2>
+				<blockquote>
+  <p>本文首次发布于 <a href="http://qiubaiying.github.io">BY Blog</a>, 作者 <a href="http://github.com/qiubaiying">@柏荧(BY)</a> ,转载请保留原文链接.</p>
+</blockquote>
 
-<p>Swift 中，对 GCD 语法进行了彻底改写。引入了 <code class="highlighter-rouge">DispatchQueue</code> 这个类。</p>
+<h1 id="前言">前言</h1>
 
-<p>先来看看在一个异步队列中读取数据， 然后再返回主线程更新 UI， 这种操作在新的 Swift 语法中是这样的：</p>
+<p>通过 IB 设置 控件 的属性非常的方便。</p>
 
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">DispatchQueue</span><span class="o">.</span><span class="nf">global</span><span class="p">()</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
+<p><img src="https://ww3.sinaimg.cn/large/006tNc79gy1ff9fpog0vrj30ho084t9m.jpg" alt="" /></p>
 
-    <span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
+<p>但是缺点也很明显，那就是有一些属性没有暴露在 IB 的设置面板中。这时候就要使用 <code class="highlighter-rouge">@IBInspectable</code> 在 IB 面板中添加这些没有的属性。</p>
 
-		<span class="c1">// 更新UI操作</span>
+<p>关于在 OC 中使用 <code class="highlighter-rouge">IBInspectable</code> 可以看一下我的 <a href="http://qiubaiying.top/2016/12/01/%E5%BF%AB%E9%80%9F%E6%B7%BB%E5%8A%A0%E5%9C%86%E8%A7%92%E5%92%8C%E6%8F%8F%E8%BE%B9/#高级">这篇文章</a></p>
 
+<h1 id="正文">正文</h1>
+
+<p>在项目中最常遇到的情况是为 view 设置圆角、描边，以及为 文本控件 添加本地化字符串。</p>
+
+<h2 id="圆角描边">圆角、描边</h2>
+
+<p>先来看看设置圆角、描边</p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">extension</span> <span class="kt">UIView</span> <span class="p">{</span>
+    <span class="kd">@IBInspectable</span> <span class="k">var</span> <span class="nv">cornerRadius</span><span class="p">:</span> <span class="kt">CGFloat</span> <span class="p">{</span>
+        <span class="k">get</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">layer</span><span class="o">.</span><span class="n">cornerRadius</span>
+        <span class="p">}</span>
+        
+        <span class="k">set</span> <span class="p">{</span>
+            <span class="n">layer</span><span class="o">.</span><span class="n">cornerRadius</span> <span class="o">=</span> <span class="n">newValue</span>
+            <span class="n">layer</span><span class="o">.</span><span class="n">masksToBounds</span> <span class="o">=</span> <span class="n">newValue</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="p">}</span>
     <span class="p">}</span>
-
-<span class="p">}</span>
-
-</code></pre></div></div>
-
-<p><code class="highlighter-rouge">DispatchQueue.global().async</code> 相当于使用全局队列进行异步操作。然后在调用 <code class="highlighter-rouge">DispatchQueue.main.async</code> 使用主线程更新相应的 UI 内容。</p>
-
-<h2 id="优先级">优先级</h2>
-
-<p>新的 GCD 引入了 QoS (Quality of Service) 的概念。</p>
-
-<p>先看看下面的代码：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">DispatchQueue</span><span class="o">.</span><span class="nf">global</span><span class="p">(</span><span class="nv">qos</span><span class="p">:</span> <span class="o">.</span><span class="n">userInitiated</span><span class="p">)</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
-
-<span class="p">}</span>
-
-</code></pre></div></div>
-
-<p>QoS 对应的就是 <code class="highlighter-rouge">Global Queue</code> 中的优先级。 其优先级由最低的 <code class="highlighter-rouge">background</code> 到最高的 <code class="highlighter-rouge">userInteractive</code> 共五个，还有一个未定义的 <code class="highlighter-rouge">unspecified</code>。</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">background</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">utility</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="kd">let</span> <span class="err">`</span><span class="k">default</span><span class="err">`</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">userInitiated</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">userInteractive</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">unspecified</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-</code></pre></div></div>
-
-<h2 id="自定义-queue">自定义 Queue</h2>
-
-<p>除了直接使用 <code class="highlighter-rouge">DispatchQueue.global().async</code> 这种封装好的代码外，还可以通过<code class="highlighter-rouge">DispatchWorkItem</code> 自定义队列的优先级，特性：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="nv">queue</span> <span class="o">=</span> <span class="kt">DispatchQueue</span><span class="p">(</span><span class="nv">label</span><span class="p">:</span> <span class="s">"swift_queue"</span><span class="p">)</span>
-<span class="k">let</span> <span class="nv">dispatchworkItem</span> <span class="o">=</span> <span class="kt">DispatchWorkItem</span><span class="p">(</span><span class="nv">qos</span><span class="p">:</span> <span class="o">.</span><span class="n">userInitiated</span><span class="p">,</span> <span class="nv">flags</span><span class="p">:</span> <span class="o">.</span><span class="n">inheritQoS</span><span class="p">)</span> <span class="p">{</span>
     
-<span class="p">}</span>
-<span class="n">queue</span><span class="o">.</span><span class="nf">async</span><span class="p">(</span><span class="nv">execute</span><span class="p">:</span> <span class="n">dispatchworkItem</span><span class="p">)</span>
-
-</code></pre></div></div>
-<h2 id="gcd定时器">GCD定时器</h2>
-
-<p>Swift 中 <code class="highlighter-rouge">dispatch_time</code>的用法改成了：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="nv">delay</span> <span class="o">=</span> <span class="kt">DispatchTime</span><span class="o">.</span><span class="nf">now</span><span class="p">()</span> <span class="o">+</span> <span class="o">.</span><span class="nf">seconds</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
-<span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="nf">asyncAfter</span><span class="p">(</span><span class="nv">deadline</span><span class="p">:</span> <span class="n">delay</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="kd">@IBInspectable</span> <span class="k">var</span> <span class="nv">borderWidth</span><span class="p">:</span> <span class="kt">CGFloat</span> <span class="p">{</span>
+        <span class="k">get</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">layer</span><span class="o">.</span><span class="n">borderWidth</span>
+        <span class="p">}</span>
+        <span class="k">set</span> <span class="p">{</span>
+            <span class="n">layer</span><span class="o">.</span><span class="n">borderWidth</span> <span class="o">=</span> <span class="n">newValue</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">?</span> <span class="nv">newValue</span> <span class="p">:</span> <span class="mi">0</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="kd">@IBInspectable</span> <span class="k">var</span> <span class="nv">borderColor</span><span class="p">:</span> <span class="kt">UIColor</span> <span class="p">{</span>
+        <span class="k">get</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kt">UIColor</span><span class="p">(</span><span class="nv">cgColor</span><span class="p">:</span> <span class="n">layer</span><span class="o">.</span><span class="n">borderColor</span><span class="o">!</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="k">set</span> <span class="p">{</span>
+            <span class="n">layer</span><span class="o">.</span><span class="n">borderColor</span> <span class="o">=</span> <span class="n">newValue</span><span class="o">.</span><span class="n">cgColor</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
     
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p>相较与OC来说更易读了：</p>
+<p>添加完成就可以在 IB 中设置 view 的这些属性了</p>
 
-<div class="language-objc highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">let</span> <span class="n">dispatch_time</span> <span class="o">=</span> <span class="n">dispatch_time</span><span class="p">(</span><span class="n">DISPATCH_TIME_NOW</span><span class="p">,</span> <span class="n">Int64</span><span class="p">(</span><span class="mi">60</span> <span class="o">*</span> <span class="n">NSEC_PER_SEC</span><span class="p">))</span>
+<p><img src="https://ww4.sinaimg.cn/large/006tNc79gy1ff9h5afhv2j30f803ajri.jpg" alt="" /></p>
+
+<p>运行效果</p>
+
+<p><img src="https://ww3.sinaimg.cn/large/006tNc79gy1ff9h70z922j30ag061wf7.jpg" alt="" /></p>
+
+<h2 id="利用-ibdesignable-在-ib-中实时显示-ibinspectable-的样式">利用 @IBDesignable 在 IB 中实时显示 @IBInspectable 的样式</h2>
+
+<p>创建一个新的 class 继承 <code class="highlighter-rouge">UIView</code> ，并且使用 <code class="highlighter-rouge">@IBDesignable</code> 声明</p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">import</span> <span class="kt">UIKit</span>
+
+<span class="kd">@IBDesignable</span> <span class="kd">class</span> <span class="kt">IBDesignableView</span><span class="p">:</span> <span class="kt">UIView</span> <span class="p">{</span>
+
+<span class="p">}</span>
 </code></pre></div></div>
+
+<p>在 IB 中，选择 view 的 class 为 我们新建的 <code class="highlighter-rouge">IBDesignableView</code></p>
+
+<p><img src="https://ww1.sinaimg.cn/large/006tNc79gy1ff9hs6z5q1j30fr03vweu.jpg" alt="" /></p>
+
+<p>这样在 IB 调整属性时，这些属性的变化就会实时显示在 IB 中。</p>
+
+<h2 id="本地化字符串">本地化字符串</h2>
+
+<p>本地化字符串的解决方法和上面的添加圆角一样</p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">extension</span> <span class="kt">UILabel</span> <span class="p">{</span>
+    <span class="kd">@IBInspectable</span> <span class="k">var</span> <span class="nv">localizedKey</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="p">{</span>
+        <span class="k">set</span> <span class="p">{</span>
+            <span class="k">guard</span> <span class="k">let</span> <span class="nv">newValue</span> <span class="o">=</span> <span class="n">newValue</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="p">}</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="kt">NSLocalizedString</span><span class="p">(</span><span class="n">newValue</span><span class="p">,</span> <span class="nv">comment</span><span class="p">:</span> <span class="s">""</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="n">text</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">extension</span> <span class="kt">UIButton</span> <span class="p">{</span>
+    <span class="kd">@IBInspectable</span> <span class="k">var</span> <span class="nv">localizedKey</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="p">{</span>
+        <span class="k">set</span> <span class="p">{</span>
+            <span class="k">guard</span> <span class="k">let</span> <span class="nv">newValue</span> <span class="o">=</span> <span class="n">newValue</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="p">}</span>
+            <span class="nf">setTitle</span><span class="p">(</span><span class="kt">NSLocalizedString</span><span class="p">(</span><span class="n">newValue</span><span class="p">,</span> <span class="nv">comment</span><span class="p">:</span> <span class="s">""</span><span class="p">),</span> <span class="nv">for</span><span class="p">:</span> <span class="o">.</span><span class="n">normal</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="n">titleLabel</span><span class="p">?</span><span class="o">.</span><span class="n">text</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">extension</span> <span class="kt">UITextField</span> <span class="p">{</span>
+    <span class="kd">@IBInspectable</span> <span class="k">var</span> <span class="nv">localizedKey</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="p">{</span>
+        <span class="k">set</span> <span class="p">{</span>
+            <span class="k">guard</span> <span class="k">let</span> <span class="nv">newValue</span> <span class="o">=</span> <span class="n">newValue</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="p">}</span>
+            <span class="n">placeholder</span> <span class="o">=</span> <span class="kt">NSLocalizedString</span><span class="p">(</span><span class="n">newValue</span><span class="p">,</span> <span class="nv">comment</span><span class="p">:</span> <span class="s">""</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="k">get</span> <span class="p">{</span> <span class="k">return</span> <span class="n">placeholder</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>这样，在 IB 中我们就可以利用对应类型的 Localized Key 来直接设置本地化字符串了：</p>
+
+<p><img src="https://ww1.sinaimg.cn/large/006tNc79gy1ff9h94um01j30aj01vjre.jpg" alt="" /></p>
+
+<h1 id="结语">结语</h1>
+
+<p><code class="highlighter-rouge">IBInspectable</code> 可以使用这些的类型</p>
 
 <ul>
-  <li>参考 <a href="https://www.swiftcafe.io/2016/10/16/swift-gcd/">GCD 在 Swift 3 中的玩儿法</a></li>
+  <li><code class="highlighter-rouge">Int</code></li>
+  <li><code class="highlighter-rouge">CGFloat</code></li>
+  <li><code class="highlighter-rouge">Double</code></li>
+  <li><code class="highlighter-rouge">String</code></li>
+  <li><code class="highlighter-rouge">Bool</code></li>
+  <li><code class="highlighter-rouge">CGPoint</code></li>
+  <li><code class="highlighter-rouge">CGSize</code></li>
+  <li><code class="highlighter-rouge">CGRect</code></li>
+  <li><code class="highlighter-rouge">UIColor</code></li>
+  <li><code class="highlighter-rouge">UIImage</code></li>
 </ul>
+
+<p>合理的使用<code class="highlighter-rouge">@IBInspectable</code> 能减少很多的模板代码，提高我们的开发效率。</p>
+
+<blockquote>
+  <p>参考</p>
+
+  <ul>
+    <li><a href="https://onevcat.com/2017/04/storyboard-argue/">《再看关于 Storyboard 的一些争论》</a></li>
+    <li><a href="https://medium.com/@Anantha1992/ibdesignable-and-ibinspectable-in-swift-3-702d7dd00ca">《@IBDesignable and @IBInspectable in Swift 3》</a></li>
+  </ul>
+</blockquote>
 
 
                 <hr style="visibility: hidden;">
@@ -467,13 +537,6 @@
 
 
                 <ul class="pager">
-                    
-                    <li class="previous">
-                        <a href="/2017/10/04/GCD-%E5%9C%A8-Swift-%E4%B8%AD%E7%9A%84%E7%94%A8%E6%B3%95/" data-toggle="tooltip" data-placement="top" title="GCD 在 Swift 中的用法">
-                        Previous<br>
-                        <span>GCD 在 Swift 中的用法</span>
-                        </a>
-                    </li>
                     
                     
                 </ul>
@@ -573,8 +636,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "qiubaiying";
-    var disqus_identifier = "/2017/10/04/Good-Day";
-    var disqus_url = "http://localhost:4000/2017/10/04/Good-Day/";
+    var disqus_identifier = "";
+    var disqus_url = "http://localhost:4000/backup/2017-05-05-%E5%9C%A8-Swift-%E4%B8%AD%E4%BD%BF%E7%94%A8-IBInspectable/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

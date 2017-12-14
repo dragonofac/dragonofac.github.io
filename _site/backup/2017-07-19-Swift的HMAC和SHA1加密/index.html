@@ -10,7 +10,7 @@
     <meta name="keywords"  content="到处挖坑的小智 | Artificial Intelligence | EndPoint | Programmer">
     <meta name="theme-color" content="#000000">
     
-    <title>大家好，我叫Daniel - 明智的博客 | About Daniel</title>
+    <title>Swift的HMAC和SHA1加密 - 明智的博客 | About Daniel</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -22,7 +22,7 @@
     <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="http://localhost:4000/2017/10/04/Good-Day/">
+    <link rel="canonical" href="http://localhost:4000/backup/2017-07-19-Swift%E7%9A%84HMAC%E5%92%8CSHA1%E5%8A%A0%E5%AF%86/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -334,13 +334,13 @@
 
     <!-- Image to hack wechat -->
 <!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
-<!-- <img src="/img/home-bg-art.jpg" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-hacker.jpg" width="0" height="0"> -->
 
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
         position: relative;
-        background-image: url('/img/home-bg-art.jpg')
+        background-image: url('/img/post-bg-hacker.jpg')
     }
 
     
@@ -353,19 +353,15 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/#iOS" title="iOS">iOS</a>
-                        
                         <a class="tag" href="/tags/#Swift" title="Swift">Swift</a>
                         
-                        <a class="tag" href="/tags/#GCD" title="GCD">GCD</a>
-                        
                     </div>
-                    <h1>大家好，我叫Daniel</h1>
+                    <h1>Swift的HMAC和SHA1加密</h1>
                     
                     
-                    <h2 class="subheading">2017.12.13 我决定换个新英文名，就叫Daniel.</h2>
+                    <h2 class="subheading">swift中利用HMAC的SHA1对文本进行加密</h2>
                     
-                    <span class="meta">Posted by Daniel on October 4, 2017</span>
+                    <span class="meta">Posted by BY on July 19, 2017</span>
                 </div>
             </div>
         </div>
@@ -383,82 +379,102 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-				<h2 id="dispatchqueue">DispatchQueue</h2>
+				<blockquote>
+  <p>HMAC是密钥相关的哈希运算消息认证码（Hash-based Message Authentication Code）。 HMAC运算利用哈希算法，以一个密钥和一个消息为输入，生成一个消息摘要作为输出。也就是说HMAC通过将哈希算法(SHA1, MD5)与密钥进行计算生成摘要。</p>
+</blockquote>
 
-<p>Swift 中，对 GCD 语法进行了彻底改写。引入了 <code class="highlighter-rouge">DispatchQueue</code> 这个类。</p>
+<h2 id="objectice-c">Objectice-C</h2>
 
-<p>先来看看在一个异步队列中读取数据， 然后再返回主线程更新 UI， 这种操作在新的 Swift 语法中是这样的：</p>
+<p>在上个 Objectice-C 项目中，使用的 HMAC 和 SHA1 进行加密。如下代码：</p>
 
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">DispatchQueue</span><span class="o">.</span><span class="nf">global</span><span class="p">()</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
+<div class="language-objc highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">+</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">hmacsha1</span><span class="p">:(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">text</span> <span class="nf">key</span><span class="p">:(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">secret</span> <span class="p">{</span>
+    
+    <span class="n">NSData</span> <span class="o">*</span><span class="n">secretData</span> <span class="o">=</span> <span class="p">[</span><span class="n">secret</span> <span class="nf">dataUsingEncoding</span><span class="p">:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+    <span class="n">NSData</span> <span class="o">*</span><span class="n">clearTextData</span> <span class="o">=</span> <span class="p">[</span><span class="n">text</span> <span class="nf">dataUsingEncoding</span><span class="p">:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">result</span><span class="p">[</span><span class="mi">20</span><span class="p">];</span>
+    <span class="c1">// SHA1加密
+</span>    <span class="n">CCHmac</span><span class="p">(</span><span class="n">kCCHmacAlgSHA1</span><span class="p">,</span> <span class="p">[</span><span class="n">secretData</span> <span class="nf">bytes</span><span class="p">],</span> <span class="p">[</span><span class="n">secretData</span> <span class="nf">length</span><span class="p">],</span> <span class="p">[</span><span class="n">clearTextData</span> <span class="nf">bytes</span><span class="p">],</span> <span class="p">[</span><span class="n">clearTextData</span> <span class="nf">length</span><span class="p">],</span> <span class="n">result</span><span class="p">);</span>
+    <span class="kt">char</span> <span class="n">base64Result</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+    <span class="kt">size_t</span> <span class="n">theResultLength</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span>
+    <span class="c1">// 转为Base64
+</span>    <span class="n">Base64EncodeData</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">base64Result</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">theResultLength</span><span class="p">,</span><span class="nb">YES</span><span class="p">);</span>
+    <span class="n">NSData</span> <span class="o">*</span><span class="n">theData</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSData</span> <span class="nf">dataWithBytes</span><span class="p">:</span><span class="n">base64Result</span> <span class="nf">length</span><span class="p">:</span><span class="n">theResultLength</span><span class="p">];</span>
+    <span class="n">NSString</span> <span class="o">*</span><span class="n">base64EncodedResult</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSString</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">initWithData</span><span class="p">:</span><span class="n">theData</span> <span class="nf">encoding</span><span class="p">:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+    <span class="k">return</span> <span class="n">base64EncodedResult</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
-    <span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
+<h2 id="swift">swift</h2>
 
-		<span class="c1">// 更新UI操作</span>
+<p>最近用 swift 重构项目,用 Swift <a href="https://stackoverflow.com/questions/26970807/implementing-hmac-and-sha1-encryption-in-swift?rq=1">重写了</a> HMAC 的 SHA1 加密方式。</p>
 
+<h3 id="使用">使用</h3>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 使用HMAC和SHA加密</span>
+<span class="k">let</span> <span class="nv">hmacResult</span><span class="p">:</span><span class="kt">String</span> <span class="o">=</span> <span class="s">"myStringToHMAC"</span><span class="o">.</span><span class="nf">hmac</span><span class="p">(</span><span class="kt">HMACAlgorithm</span><span class="o">.</span><span class="kt">SHA1</span><span class="p">,</span> <span class="nv">key</span><span class="p">:</span> <span class="s">"myKey"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="代码">代码</h3>
+
+<p>使用下面代码时，需要在 OC 桥接文件<code class="highlighter-rouge">xxx-Bridging-Header</code>中 <code class="highlighter-rouge">#import &lt;CommonCrypto/CommonHMAC.h&gt;</code></p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">extension</span> <span class="kt">String</span> <span class="p">{</span>
+    <span class="kd">func</span> <span class="nf">hmac</span><span class="p">(</span><span class="nv">algorithm</span><span class="p">:</span> <span class="kt">HMACAlgorithm</span><span class="p">,</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="nv">cKey</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="nf">cStringUsingEncoding</span><span class="p">(</span><span class="kt">NSUTF8StringEncoding</span><span class="p">)</span>
+        <span class="k">let</span> <span class="nv">cData</span> <span class="o">=</span> <span class="k">self</span><span class="o">.</span><span class="nf">cStringUsingEncoding</span><span class="p">(</span><span class="kt">NSUTF8StringEncoding</span><span class="p">)</span>
+        <span class="k">var</span> <span class="nv">result</span> <span class="o">=</span> <span class="p">[</span><span class="kt">CUnsignedChar</span><span class="p">](</span><span class="nv">count</span><span class="p">:</span> <span class="kt">Int</span><span class="p">(</span><span class="n">algorithm</span><span class="o">.</span><span class="nf">digestLength</span><span class="p">()),</span> <span class="nv">repeatedValue</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="kt">CCHmac</span><span class="p">(</span><span class="n">algorithm</span><span class="o">.</span><span class="nf">toCCHmacAlgorithm</span><span class="p">(),</span> <span class="n">cKey</span><span class="o">!</span><span class="p">,</span> <span class="nf">strlen</span><span class="p">(</span><span class="n">cKey</span><span class="o">!</span><span class="p">),</span> <span class="n">cData</span><span class="o">!</span><span class="p">,</span> <span class="nf">strlen</span><span class="p">(</span><span class="n">cData</span><span class="o">!</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">var</span> <span class="nv">hmacData</span><span class="p">:</span><span class="kt">NSData</span> <span class="o">=</span> <span class="kt">NSData</span><span class="p">(</span><span class="nv">bytes</span><span class="p">:</span> <span class="n">result</span><span class="p">,</span> <span class="nv">length</span><span class="p">:</span> <span class="p">(</span><span class="kt">Int</span><span class="p">(</span><span class="n">algorithm</span><span class="o">.</span><span class="nf">digestLength</span><span class="p">())))</span>
+        <span class="k">var</span> <span class="nv">hmacBase64</span> <span class="o">=</span> <span class="n">hmacData</span><span class="o">.</span><span class="nf">base64EncodedStringWithOptions</span><span class="p">(</span><span class="kt">NSDataBase64EncodingOptions</span><span class="o">.</span><span class="kt">Encoding76CharacterLineLength</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kt">String</span><span class="p">(</span><span class="n">hmacBase64</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">enum</span> <span class="kt">HMACAlgorithm</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="kt">MD5</span><span class="p">,</span> <span class="kt">SHA1</span><span class="p">,</span> <span class="kt">SHA224</span><span class="p">,</span> <span class="kt">SHA256</span><span class="p">,</span> <span class="kt">SHA384</span><span class="p">,</span> <span class="kt">SHA512</span>
+
+    <span class="kd">func</span> <span class="nf">toCCHmacAlgorithm</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">CCHmacAlgorithm</span> <span class="p">{</span>
+        <span class="k">var</span> <span class="nv">result</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">switch</span> <span class="k">self</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="o">.</span><span class="kt">MD5</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">kCCHmacAlgMD5</span>
+        <span class="k">case</span> <span class="o">.</span><span class="kt">SHA1</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">kCCHmacAlgSHA1</span>
+        <span class="k">case</span> <span class="o">.</span><span class="kt">SHA224</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">kCCHmacAlgSHA224</span>
+        <span class="k">case</span> <span class="o">.</span><span class="kt">SHA256</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">kCCHmacAlgSHA256</span>
+        <span class="k">case</span> <span class="o">.</span><span class="kt">SHA384</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">kCCHmacAlgSHA384</span>
+        <span class="k">case</span> <span class="o">.</span><span class="kt">SHA512</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">kCCHmacAlgSHA512</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="kt">CCHmacAlgorithm</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
     <span class="p">}</span>
 
+    <span class="kd">func</span> <span class="nf">digestLength</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Int</span> <span class="p">{</span>
+        <span class="k">var</span> <span class="nv">result</span><span class="p">:</span> <span class="kt">CInt</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">switch</span> <span class="k">self</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="o">.</span><span class="kt">MD5</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="kt">CC_MD5_DIGEST_LENGTH</span>
+        <span class="k">case</span> <span class="o">.</span><span class="kt">SHA1</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="kt">CC_SHA1_DIGEST_LENGTH</span>
+        <span class="k">case</span> <span class="o">.</span><span class="kt">SHA224</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="kt">CC_SHA224_DIGEST_LENGTH</span>
+        <span class="k">case</span> <span class="o">.</span><span class="kt">SHA256</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="kt">CC_SHA256_DIGEST_LENGTH</span>
+        <span class="k">case</span> <span class="o">.</span><span class="kt">SHA384</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="kt">CC_SHA384_DIGEST_LENGTH</span>
+        <span class="k">case</span> <span class="o">.</span><span class="kt">SHA512</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="kt">CC_SHA512_DIGEST_LENGTH</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="kt">Int</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="p">}</span>
 <span class="p">}</span>
 
-</code></pre></div></div>
-
-<p><code class="highlighter-rouge">DispatchQueue.global().async</code> 相当于使用全局队列进行异步操作。然后在调用 <code class="highlighter-rouge">DispatchQueue.main.async</code> 使用主线程更新相应的 UI 内容。</p>
-
-<h2 id="优先级">优先级</h2>
-
-<p>新的 GCD 引入了 QoS (Quality of Service) 的概念。</p>
-
-<p>先看看下面的代码：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">DispatchQueue</span><span class="o">.</span><span class="nf">global</span><span class="p">(</span><span class="nv">qos</span><span class="p">:</span> <span class="o">.</span><span class="n">userInitiated</span><span class="p">)</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
-
-<span class="p">}</span>
 
 </code></pre></div></div>
 
-<p>QoS 对应的就是 <code class="highlighter-rouge">Global Queue</code> 中的优先级。 其优先级由最低的 <code class="highlighter-rouge">background</code> 到最高的 <code class="highlighter-rouge">userInteractive</code> 共五个，还有一个未定义的 <code class="highlighter-rouge">unspecified</code>。</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">background</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">utility</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="kd">let</span> <span class="err">`</span><span class="k">default</span><span class="err">`</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">userInitiated</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">userInteractive</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">unspecified</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-</code></pre></div></div>
-
-<h2 id="自定义-queue">自定义 Queue</h2>
-
-<p>除了直接使用 <code class="highlighter-rouge">DispatchQueue.global().async</code> 这种封装好的代码外，还可以通过<code class="highlighter-rouge">DispatchWorkItem</code> 自定义队列的优先级，特性：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="nv">queue</span> <span class="o">=</span> <span class="kt">DispatchQueue</span><span class="p">(</span><span class="nv">label</span><span class="p">:</span> <span class="s">"swift_queue"</span><span class="p">)</span>
-<span class="k">let</span> <span class="nv">dispatchworkItem</span> <span class="o">=</span> <span class="kt">DispatchWorkItem</span><span class="p">(</span><span class="nv">qos</span><span class="p">:</span> <span class="o">.</span><span class="n">userInitiated</span><span class="p">,</span> <span class="nv">flags</span><span class="p">:</span> <span class="o">.</span><span class="n">inheritQoS</span><span class="p">)</span> <span class="p">{</span>
-    
-<span class="p">}</span>
-<span class="n">queue</span><span class="o">.</span><span class="nf">async</span><span class="p">(</span><span class="nv">execute</span><span class="p">:</span> <span class="n">dispatchworkItem</span><span class="p">)</span>
-
-</code></pre></div></div>
-<h2 id="gcd定时器">GCD定时器</h2>
-
-<p>Swift 中 <code class="highlighter-rouge">dispatch_time</code>的用法改成了：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="nv">delay</span> <span class="o">=</span> <span class="kt">DispatchTime</span><span class="o">.</span><span class="nf">now</span><span class="p">()</span> <span class="o">+</span> <span class="o">.</span><span class="nf">seconds</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
-<span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="nf">asyncAfter</span><span class="p">(</span><span class="nv">deadline</span><span class="p">:</span> <span class="n">delay</span><span class="p">)</span> <span class="p">{</span> 
-    
-<span class="p">}</span>
-</code></pre></div></div>
-
-<p>相较与OC来说更易读了：</p>
-
-<div class="language-objc highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">let</span> <span class="n">dispatch_time</span> <span class="o">=</span> <span class="n">dispatch_time</span><span class="p">(</span><span class="n">DISPATCH_TIME_NOW</span><span class="p">,</span> <span class="n">Int64</span><span class="p">(</span><span class="mi">60</span> <span class="o">*</span> <span class="n">NSEC_PER_SEC</span><span class="p">))</span>
-</code></pre></div></div>
-
-<ul>
-  <li>参考 <a href="https://www.swiftcafe.io/2016/10/16/swift-gcd/">GCD 在 Swift 3 中的玩儿法</a></li>
-</ul>
 
 
                 <hr style="visibility: hidden;">
@@ -467,13 +483,6 @@
 
 
                 <ul class="pager">
-                    
-                    <li class="previous">
-                        <a href="/2017/10/04/GCD-%E5%9C%A8-Swift-%E4%B8%AD%E7%9A%84%E7%94%A8%E6%B3%95/" data-toggle="tooltip" data-placement="top" title="GCD 在 Swift 中的用法">
-                        Previous<br>
-                        <span>GCD 在 Swift 中的用法</span>
-                        </a>
-                    </li>
                     
                     
                 </ul>
@@ -573,8 +582,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "qiubaiying";
-    var disqus_identifier = "/2017/10/04/Good-Day";
-    var disqus_url = "http://localhost:4000/2017/10/04/Good-Day/";
+    var disqus_identifier = "";
+    var disqus_url = "http://localhost:4000/backup/2017-07-19-Swift%E7%9A%84HMAC%E5%92%8CSHA1%E5%8A%A0%E5%AF%86/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

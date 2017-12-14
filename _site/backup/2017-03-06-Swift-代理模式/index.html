@@ -10,7 +10,7 @@
     <meta name="keywords"  content="到处挖坑的小智 | Artificial Intelligence | EndPoint | Programmer">
     <meta name="theme-color" content="#000000">
     
-    <title>大家好，我叫Daniel - 明智的博客 | About Daniel</title>
+    <title>Swift 代理模式 - 明智的博客 | About Daniel</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -22,7 +22,7 @@
     <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="http://localhost:4000/2017/10/04/Good-Day/">
+    <link rel="canonical" href="http://localhost:4000/backup/2017-03-06-Swift-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -334,13 +334,13 @@
 
     <!-- Image to hack wechat -->
 <!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
-<!-- <img src="/img/home-bg-art.jpg" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-ios10.jpg" width="0" height="0"> -->
 
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
         position: relative;
-        background-image: url('/img/home-bg-art.jpg')
+        background-image: url('/img/post-bg-ios10.jpg')
     }
 
     
@@ -357,15 +357,15 @@
                         
                         <a class="tag" href="/tags/#Swift" title="Swift">Swift</a>
                         
-                        <a class="tag" href="/tags/#GCD" title="GCD">GCD</a>
+                        <a class="tag" href="/tags/#设计模式" title="设计模式">设计模式</a>
                         
                     </div>
-                    <h1>大家好，我叫Daniel</h1>
+                    <h1>Swift 代理模式</h1>
                     
                     
-                    <h2 class="subheading">2017.12.13 我决定换个新英文名，就叫Daniel.</h2>
+                    <h2 class="subheading">Swift中如何使用代理模式</h2>
                     
-                    <span class="meta">Posted by Daniel on October 4, 2017</span>
+                    <span class="meta">Posted by BY on March 6, 2017</span>
                 </div>
             </div>
         </div>
@@ -383,82 +383,167 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-				<h2 id="dispatchqueue">DispatchQueue</h2>
+				<blockquote>
+  <table>
+    <tbody>
+      <tr>
+        <td>Xcode 8.2</td>
+        <td>Swift 3.0</td>
+      </tr>
+    </tbody>
+  </table>
+</blockquote>
 
-<p>Swift 中，对 GCD 语法进行了彻底改写。引入了 <code class="highlighter-rouge">DispatchQueue</code> 这个类。</p>
+<p>在iOS开发中，无论是 <strong>Objective-C</strong> 还是 <strong>Swift</strong> ，<strong>Delegate</strong> 有着具足轻重的位置，如<code class="highlighter-rouge">TabelViewDelegate</code> 与 <code class="highlighter-rouge">TableViewDataSource</code>。</p>
 
-<p>先来看看在一个异步队列中读取数据， 然后再返回主线程更新 UI， 这种操作在新的 Swift 语法中是这样的：</p>
+<p><strong>Swift</strong> 中的代理模式 和 <strong>Objective-C</strong> 除了语法外，几乎一样。</p>
 
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">DispatchQueue</span><span class="o">.</span><span class="nf">global</span><span class="p">()</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
+<h2 id="objective-c-代理模式">Objective-C 代理模式</h2>
 
-    <span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
+<p>在介绍 Swift 代理模式前，先来看回顾一下 Objective-C 中的代理模式如何实现</p>
 
-		<span class="c1">// 更新UI操作</span>
+<p>Objective-C 中用代理实现反向传值：</p>
 
-    <span class="p">}</span>
+<p><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1fdd51zf5cwg307i0dck3f.gif" alt="" /></p>
 
-<span class="p">}</span>
+<h4 id="委托方子控制器">委托方（子控制器）</h4>
 
-</code></pre></div></div>
-
-<p><code class="highlighter-rouge">DispatchQueue.global().async</code> 相当于使用全局队列进行异步操作。然后在调用 <code class="highlighter-rouge">DispatchQueue.main.async</code> 使用主线程更新相应的 UI 内容。</p>
-
-<h2 id="优先级">优先级</h2>
-
-<p>新的 GCD 引入了 QoS (Quality of Service) 的概念。</p>
-
-<p>先看看下面的代码：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">DispatchQueue</span><span class="o">.</span><span class="nf">global</span><span class="p">(</span><span class="nv">qos</span><span class="p">:</span> <span class="o">.</span><span class="n">userInitiated</span><span class="p">)</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
-
-<span class="p">}</span>
-
-</code></pre></div></div>
-
-<p>QoS 对应的就是 <code class="highlighter-rouge">Global Queue</code> 中的优先级。 其优先级由最低的 <code class="highlighter-rouge">background</code> 到最高的 <code class="highlighter-rouge">userInteractive</code> 共五个，还有一个未定义的 <code class="highlighter-rouge">unspecified</code>。</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">background</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">utility</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="kd">let</span> <span class="err">`</span><span class="k">default</span><span class="err">`</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">userInitiated</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">userInteractive</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">unspecified</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-</code></pre></div></div>
-
-<h2 id="自定义-queue">自定义 Queue</h2>
-
-<p>除了直接使用 <code class="highlighter-rouge">DispatchQueue.global().async</code> 这种封装好的代码外，还可以通过<code class="highlighter-rouge">DispatchWorkItem</code> 自定义队列的优先级，特性：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="nv">queue</span> <span class="o">=</span> <span class="kt">DispatchQueue</span><span class="p">(</span><span class="nv">label</span><span class="p">:</span> <span class="s">"swift_queue"</span><span class="p">)</span>
-<span class="k">let</span> <span class="nv">dispatchworkItem</span> <span class="o">=</span> <span class="kt">DispatchWorkItem</span><span class="p">(</span><span class="nv">qos</span><span class="p">:</span> <span class="o">.</span><span class="n">userInitiated</span><span class="p">,</span> <span class="nv">flags</span><span class="p">:</span> <span class="o">.</span><span class="n">inheritQoS</span><span class="p">)</span> <span class="p">{</span>
-    
-<span class="p">}</span>
-<span class="n">queue</span><span class="o">.</span><span class="nf">async</span><span class="p">(</span><span class="nv">execute</span><span class="p">:</span> <span class="n">dispatchworkItem</span><span class="p">)</span>
-
-</code></pre></div></div>
-<h2 id="gcd定时器">GCD定时器</h2>
-
-<p>Swift 中 <code class="highlighter-rouge">dispatch_time</code>的用法改成了：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="nv">delay</span> <span class="o">=</span> <span class="kt">DispatchTime</span><span class="o">.</span><span class="nf">now</span><span class="p">()</span> <span class="o">+</span> <span class="o">.</span><span class="nf">seconds</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
-<span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="nf">asyncAfter</span><span class="p">(</span><span class="nv">deadline</span><span class="p">:</span> <span class="n">delay</span><span class="p">)</span> <span class="p">{</span> 
-    
-<span class="p">}</span>
-</code></pre></div></div>
-
-<p>相较与OC来说更易读了：</p>
-
-<div class="language-objc highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">let</span> <span class="n">dispatch_time</span> <span class="o">=</span> <span class="n">dispatch_time</span><span class="p">(</span><span class="n">DISPATCH_TIME_NOW</span><span class="p">,</span> <span class="n">Int64</span><span class="p">(</span><span class="mi">60</span> <span class="o">*</span> <span class="n">NSEC_PER_SEC</span><span class="p">))</span>
-</code></pre></div></div>
+<p>委托方需要实现</p>
 
 <ul>
-  <li>参考 <a href="https://www.swiftcafe.io/2016/10/16/swift-gcd/">GCD 在 Swift 3 中的玩儿法</a></li>
+  <li>
+    <p>创建协议 、声明协议方法</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">@protocol</span> <span class="nc">SubViewDelegate</span> <span class="o">&lt;</span><span class="n">NSObject</span><span class="o">&gt;</span>
+	
+  <span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">backWithStr</span><span class="o">:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span> <span class="n">str</span><span class="p">;</span>
+
+  <span class="k">@end</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>创建一个代理属性</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="c1">// weak声明
+</span>  <span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">weak</span><span class="p">)</span> <span class="n">id</span><span class="o">&lt;</span><span class="n">SubViewDelegate</span><span class="o">&gt;</span> <span class="n">delegate</span><span class="p">;</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>执行协议方法</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  // 判断代理是实现该方法，避免carsh
+  	if ([self.delegate respondsToSelector:@selector(backWithStr:)]) {
+   	[self.delegate backWithStr:self.textField.text];
+   }
+</code></pre></div>    </div>
+  </li>
 </ul>
+
+<h4 id="代理方主控制器">代理方（主控制器）</h4>
+<p>代理方需要实现</p>
+
+<ul>
+  <li>
+    <p>遵守（继承）协议</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  @interface ViewController () &lt;SubViewDelegate&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>将代理设为自己</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  subVC.delegate = self;
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>实现代理方法</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  - (void)backWithStr:(NSString *)str {
+  	self.label.text = str;
+  }
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="swift-代理模式">Swift 代理模式</h2>
+
+<p>Swift 代理模式 与 Objective-C 一样，只是语法不同。</p>
+
+<p>Swift 中用代理实现反向传值：</p>
+
+<p><img src="https://ww1.sinaimg.cn/large/006tKfTcgy1fdd5oi9048g307i0dc7co.gif" alt="" /></p>
+
+<h4 id="委托方子控制器-1">委托方（子控制器）</h4>
+
+<ul>
+  <li>
+    <p>创建协议 、声明协议方法</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  protocol SubViewDelegate {
+  func backStr(str: String)
+  }	
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>创建一个代理属性</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  var delegate: SubViewDelegate?
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>执行协议方法</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  /// 执行代理方法，将值回传
+  delegate?.backStr(str: textField.text ?? "")
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h4 id="代理方主控制器-1">代理方(主控制器)</h4>
+<ul>
+  <li>
+    <p>继承协议</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  class ViewController: UIViewController, SubViewDelegate
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>将代理设为自己</p>
+
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  subVC.delegate = self
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>实现代理方法</p>
+
+    <div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">func</span> <span class="nf">backStr</span><span class="p">(</span><span class="nv">str</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">self</span><span class="o">.</span><span class="n">textF</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">str</span>
+  <span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="总结">总结</h2>
+
+<p>对比可以方法 Swift 代理模式 与 Objective-C 用法完全相同，只是语法发生了变化。</p>
+
+<p>值得一提的是Swift 的扩展 <code class="highlighter-rouge">extension</code>可以用来继承协议,实现代码隔离，便于维护。</p>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">/// 使用扩展继承协议 实现协议方法 可以分离代码</span>
+<span class="kd">extension</span> <span class="kt">ViewController</span><span class="p">:</span> <span class="kt">SubViewDelegate</span><span class="p">{</span>
+    <span class="c1">/// 实现代理方法</span>
+    <span class="kd">func</span> <span class="nf">backStr</span><span class="p">(</span><span class="nv">str</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">textF</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">str</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="demo源码">Demo源码</h2>
+
+<p>最后附上<a href="https://github.com/qiubaiying/iOS-Delegate_Demo">Demo源码</a></p>
+
+<p>如果对你有帮助的话，<strong>Star</strong>✨下一吧！</p>
+
 
 
                 <hr style="visibility: hidden;">
@@ -467,13 +552,6 @@
 
 
                 <ul class="pager">
-                    
-                    <li class="previous">
-                        <a href="/2017/10/04/GCD-%E5%9C%A8-Swift-%E4%B8%AD%E7%9A%84%E7%94%A8%E6%B3%95/" data-toggle="tooltip" data-placement="top" title="GCD 在 Swift 中的用法">
-                        Previous<br>
-                        <span>GCD 在 Swift 中的用法</span>
-                        </a>
-                    </li>
                     
                     
                 </ul>
@@ -573,8 +651,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "qiubaiying";
-    var disqus_identifier = "/2017/10/04/Good-Day";
-    var disqus_url = "http://localhost:4000/2017/10/04/Good-Day/";
+    var disqus_identifier = "";
+    var disqus_url = "http://localhost:4000/backup/2017-03-06-Swift-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

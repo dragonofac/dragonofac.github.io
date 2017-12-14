@@ -10,7 +10,7 @@
     <meta name="keywords"  content="到处挖坑的小智 | Artificial Intelligence | EndPoint | Programmer">
     <meta name="theme-color" content="#000000">
     
-    <title>大家好，我叫Daniel - 明智的博客 | About Daniel</title>
+    <title>iOS噪音计 - 明智的博客 | About Daniel</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -22,7 +22,7 @@
     <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="http://localhost:4000/2017/10/04/Good-Day/">
+    <link rel="canonical" href="http://localhost:4000/backup/2016-11-15-iOS%E5%99%AA%E9%9F%B3%E8%AE%A1%E6%A8%A1%E5%9E%8B/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -334,13 +334,13 @@
 
     <!-- Image to hack wechat -->
 <!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
-<!-- <img src="/img/home-bg-art.jpg" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-ios9-web.jpg" width="0" height="0"> -->
 
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
         position: relative;
-        background-image: url('/img/home-bg-art.jpg')
+        background-image: url('/img/post-bg-ios9-web.jpg')
     }
 
     
@@ -355,17 +355,15 @@
                         
                         <a class="tag" href="/tags/#iOS" title="iOS">iOS</a>
                         
-                        <a class="tag" href="/tags/#Swift" title="Swift">Swift</a>
-                        
-                        <a class="tag" href="/tags/#GCD" title="GCD">GCD</a>
+                        <a class="tag" href="/tags/#Demo" title="Demo">Demo</a>
                         
                     </div>
-                    <h1>大家好，我叫Daniel</h1>
+                    <h1>iOS噪音计</h1>
                     
                     
-                    <h2 class="subheading">2017.12.13 我决定换个新英文名，就叫Daniel.</h2>
+                    <h2 class="subheading">一个iOS噪音计模型、以及测量原理及分贝计算</h2>
                     
-                    <span class="meta">Posted by Daniel on October 4, 2017</span>
+                    <span class="meta">Posted by BY on November 15, 2016</span>
                 </div>
             </div>
         </div>
@@ -383,82 +381,117 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-				<h2 id="dispatchqueue">DispatchQueue</h2>
+				<h1 id="前言">前言</h1>
 
-<p>Swift 中，对 GCD 语法进行了彻底改写。引入了 <code class="highlighter-rouge">DispatchQueue</code> 这个类。</p>
+<p>最近在办公室觉得有点吵，然后忽然想做一个噪音计测试一下噪音，在App Store下载了几款测噪音软件，使用原来都大同小异。于是决定自己实现测噪音的原理。</p>
 
-<p>先来看看在一个异步队列中读取数据， 然后再返回主线程更新 UI， 这种操作在新的 Swift 语法中是这样的：</p>
+<h2 id="分贝db">分贝dB</h2>
+<p>首先要测量噪音，必须知道噪音的大小的参考的单位为分贝（dB），分贝的定义如下：</p>
 
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">DispatchQueue</span><span class="o">.</span><span class="nf">global</span><span class="p">()</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SPL = 20lg[p(e)/p(ref)]
+</code></pre></div></div>
+<p><code class="highlighter-rouge">p(e)</code>为待测的有效声压，<code class="highlighter-rouge">p(ref)</code>为参考声压，一般取2*10E-5帕，这是人耳能分辨的最小声压（1KHz）。</p>
 
-    <span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
+<p>就是说噪音每增加20dB，声压增强了10倍。</p>
 
-		<span class="c1">// 更新UI操作</span>
+<h2 id="ios测噪音原理">iOS测噪音原理</h2>
 
-    <span class="p">}</span>
+<p>iOS设备测量噪音原理非常简单：调用系统麦克风，根据麦克风输入强度计算转化为对应的dB值。但是，实现的过程可是坑满满。</p>
 
-<span class="p">}</span>
+<p>找到了一篇博客介绍iOS硬件的调用:<a href="http://www.cnblogs.com/kenshincui/p/4186022.html">iOS开发系列–音频播放、录音、视频播放、拍照、视频录制</a></p>
 
+<p>iOS的<code class="highlighter-rouge">AVFoundation</code>框架中有一个<code class="highlighter-rouge">AVAudioRecorder</code>类专门处理录音操作，详见<a href="https://developer.apple.com/reference/avfoundation/1668872-av_foundation_audio_settings_con">Apple文档</a></p>
+
+<p>在<code class="highlighter-rouge">AVAudioRecorder.h</code>中找到下列方法</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- (void)updateMeters; /* call to refresh meter values */ 更新麦克风测量值
+- (float)peakPowerForChannel:(NSUInteger)channelNumber; /* returns peak power in decibels for a given channel */ 获取峰值
+- (float)averagePowerForChannel:(NSUInteger)channelNumber; /* returns average power in decibels for a given channel */ 获取平局值
 </code></pre></div></div>
 
-<p><code class="highlighter-rouge">DispatchQueue.global().async</code> 相当于使用全局队列进行异步操作。然后在调用 <code class="highlighter-rouge">DispatchQueue.main.async</code> 使用主线程更新相应的 UI 内容。</p>
+<p><code class="highlighter-rouge">- (float)averagePowerForChannel:(NSUInteger)channelNumber;</code>文档中描述：</p>
 
-<h2 id="优先级">优先级</h2>
+<blockquote>
+  <p>Return Value</p>
+</blockquote>
 
-<p>新的 GCD 引入了 QoS (Quality of Service) 的概念。</p>
+<blockquote>
+  <p>The current average power, in decibels, for the sound being recorded. A return value of 0 dB indicates full scale, or maximum power; a return value of -160 dB indicates minimum power (that is, near silence).</p>
+</blockquote>
 
-<p>先看看下面的代码：</p>
+<blockquote>
+  <p>If the signal provided to the audio recorder exceeds ±full scale, then the return value may exceed 0 (that is, it may enter the positive range).</p>
+</blockquote>
 
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">DispatchQueue</span><span class="o">.</span><span class="nf">global</span><span class="p">(</span><span class="nv">qos</span><span class="p">:</span> <span class="o">.</span><span class="n">userInitiated</span><span class="p">)</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
+<blockquote>
+  <p>Discussion</p>
+</blockquote>
 
-<span class="p">}</span>
+<blockquote>
+  <p>To obtain a current average power value, you must call the updateMeters method before calling this method.</p>
+</blockquote>
 
-</code></pre></div></div>
+<p>也就是说获取的麦克风测量值返回值范围为 <code class="highlighter-rouge">-160dB ~ 0dB</code>,并且注意最后那句话返回值可能超过0。</p>
 
-<p>QoS 对应的就是 <code class="highlighter-rouge">Global Queue</code> 中的优先级。 其优先级由最低的 <code class="highlighter-rouge">background</code> 到最高的 <code class="highlighter-rouge">userInteractive</code> 共五个，还有一个未定义的 <code class="highlighter-rouge">unspecified</code>。</p>
+<h2 id="转化公式">转化公式</h2>
 
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">background</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
+<p>获取的的测量值为 <code class="highlighter-rouge">-160 ~ 0dB</code> ，如何转化为我们所要的噪音值呢？在网上找了很多资料都没有结果，于是就自己摸索转化公式。</p>
 
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">utility</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
+<p>刚开始想到的是利用分贝计算公式<code class="highlighter-rouge">SPL = 20lg[p(e)/p(ref)]</code>进行计算，后来直接放弃这个方案，因为这是一个对数运算，获取到的值非常稳定，几乎不会波动，与其他的测噪软件所得的分贝值出入太大。</p>
 
-<span class="kd">public</span> <span class="kd">static</span> <span class="kd">let</span> <span class="err">`</span><span class="k">default</span><span class="err">`</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
+<p>然后发现有个App在麦克风没有输入时显示-55dB</p>
 
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">userInitiated</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
+<p><img src="http://ww2.sinaimg.cn/large/7853084cgw1f9u0nu3xv3j205n0a0glq.jpg" alt="" /></p>
 
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">userInteractive</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
+<p>于是思路就有了。</p>
 
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">unspecified</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-</code></pre></div></div>
+<p>其他测噪音软件的量程均为<code class="highlighter-rouge">0~110dB</code>,而我们获取的的测量值为 <code class="highlighter-rouge">-160 ~ 0dB</code>，两者之间差了<code class="highlighter-rouge">50dB</code>，也就是说以麦克风的测量值的<code class="highlighter-rouge">-160dB+50dB = -110dB</code>作为起点，<code class="highlighter-rouge">0dB</code>作为Max值,恰好量程为<code class="highlighter-rouge">0~110dB</code>.</p>
 
-<h2 id="自定义-queue">自定义 Queue</h2>
+<p>问题看似结束，但是直接以<code class="highlighter-rouge">50dB</code>作为补偿测量结果会偏大。最后选择了分段进行处理，代码如下</p>
 
-<p>除了直接使用 <code class="highlighter-rouge">DispatchQueue.global().async</code> 这种封装好的代码外，还可以通过<code class="highlighter-rouge">DispatchWorkItem</code> 自定义队列的优先级，特性：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="nv">queue</span> <span class="o">=</span> <span class="kt">DispatchQueue</span><span class="p">(</span><span class="nv">label</span><span class="p">:</span> <span class="s">"swift_queue"</span><span class="p">)</span>
-<span class="k">let</span> <span class="nv">dispatchworkItem</span> <span class="o">=</span> <span class="kt">DispatchWorkItem</span><span class="p">(</span><span class="nv">qos</span><span class="p">:</span> <span class="o">.</span><span class="n">userInitiated</span><span class="p">,</span> <span class="nv">flags</span><span class="p">:</span> <span class="o">.</span><span class="n">inheritQoS</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+-(void)audioPowerChange{
     
-<span class="p">}</span>
-<span class="n">queue</span><span class="o">.</span><span class="nf">async</span><span class="p">(</span><span class="nv">execute</span><span class="p">:</span> <span class="n">dispatchworkItem</span><span class="p">)</span>
-
-</code></pre></div></div>
-<h2 id="gcd定时器">GCD定时器</h2>
-
-<p>Swift 中 <code class="highlighter-rouge">dispatch_time</code>的用法改成了：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="nv">delay</span> <span class="o">=</span> <span class="kt">DispatchTime</span><span class="o">.</span><span class="nf">now</span><span class="p">()</span> <span class="o">+</span> <span class="o">.</span><span class="nf">seconds</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
-<span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="nf">asyncAfter</span><span class="p">(</span><span class="nv">deadline</span><span class="p">:</span> <span class="n">delay</span><span class="p">)</span> <span class="p">{</span> 
+    [self.audioRecorder updateMeters];//更新测量值
+    float power = [self.audioRecorder averagePowerForChannel:0];// 均值
+    float powerMax = [self.audioRecorder peakPowerForChannel:0];// 峰值
+    NSLog(@"power = %f, powerMax = %f",power, powerMax);
     
-<span class="p">}</span>
+    CGFloat progress = (1.0 / 160.0) * (power + 160.0);
+    
+    // 关键代码
+    power = power + 160  - 50;
+    
+    int dB = 0;
+    if (power &lt; 0.f) {
+        dB = 0;
+    } else if (power &lt; 40.f) {
+        dB = (int)(power * 0.875);
+    } else if (power &lt; 100.f) {
+        dB = (int)(power - 15);
+    } else if (power &lt; 110.f) {
+        dB = (int)(power * 2.5 - 165);
+    } else {
+        dB = 110;
+    }
+    
+    NSLog(@"progress = %f, dB = %d", progress, dB);
+    self.powerLabel.text = [NSString stringWithFormat:@"%ddB", dB];
+    [self.audioPowerProgress setProgress:progress];
+
+}
+
 </code></pre></div></div>
 
-<p>相较与OC来说更易读了：</p>
+<h1 id="效果">效果</h1>
 
-<div class="language-objc highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">let</span> <span class="n">dispatch_time</span> <span class="o">=</span> <span class="n">dispatch_time</span><span class="p">(</span><span class="n">DISPATCH_TIME_NOW</span><span class="p">,</span> <span class="n">Int64</span><span class="p">(</span><span class="mi">60</span> <span class="o">*</span> <span class="n">NSEC_PER_SEC</span><span class="p">))</span>
-</code></pre></div></div>
+<p>效果如下：</p>
 
-<ul>
-  <li>参考 <a href="https://www.swiftcafe.io/2016/10/16/swift-gcd/">GCD 在 Swift 3 中的玩儿法</a></li>
-</ul>
+<p><img src="http://ww4.sinaimg.cn/large/7853084cgw1f9u1gqgqieg20k00zk7d8.gif" alt="" /></p>
+
+<h1 id="下载地址">下载地址</h1>
+
+<p>Demo下载地址：<a href="https://github.com/qiubaiying/Noise-meter-Demo">Noise-meter-Demo</a></p>
 
 
                 <hr style="visibility: hidden;">
@@ -467,13 +500,6 @@
 
 
                 <ul class="pager">
-                    
-                    <li class="previous">
-                        <a href="/2017/10/04/GCD-%E5%9C%A8-Swift-%E4%B8%AD%E7%9A%84%E7%94%A8%E6%B3%95/" data-toggle="tooltip" data-placement="top" title="GCD 在 Swift 中的用法">
-                        Previous<br>
-                        <span>GCD 在 Swift 中的用法</span>
-                        </a>
-                    </li>
                     
                     
                 </ul>
@@ -573,8 +599,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "qiubaiying";
-    var disqus_identifier = "/2017/10/04/Good-Day";
-    var disqus_url = "http://localhost:4000/2017/10/04/Good-Day/";
+    var disqus_identifier = "";
+    var disqus_url = "http://localhost:4000/backup/2016-11-15-iOS%E5%99%AA%E9%9F%B3%E8%AE%A1%E6%A8%A1%E5%9E%8B/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

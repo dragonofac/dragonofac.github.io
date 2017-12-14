@@ -10,7 +10,7 @@
     <meta name="keywords"  content="到处挖坑的小智 | Artificial Intelligence | EndPoint | Programmer">
     <meta name="theme-color" content="#000000">
     
-    <title>大家好，我叫Daniel - 明智的博客 | About Daniel</title>
+    <title>iOS自动打包 - 明智的博客 | About Daniel</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -22,7 +22,7 @@
     <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="http://localhost:4000/2017/10/04/Good-Day/">
+    <link rel="canonical" href="http://localhost:4000/backup/2017-04-20-iOS%E8%87%AA%E5%8A%A8%E6%89%93%E5%8C%85/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -334,13 +334,13 @@
 
     <!-- Image to hack wechat -->
 <!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
-<!-- <img src="/img/home-bg-art.jpg" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-hacker.jpg" width="0" height="0"> -->
 
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
         position: relative;
-        background-image: url('/img/home-bg-art.jpg')
+        background-image: url('/img/post-bg-hacker.jpg')
     }
 
     
@@ -355,17 +355,19 @@
                         
                         <a class="tag" href="/tags/#iOS" title="iOS">iOS</a>
                         
-                        <a class="tag" href="/tags/#Swift" title="Swift">Swift</a>
+                        <a class="tag" href="/tags/#Xcode" title="Xcode">Xcode</a>
                         
-                        <a class="tag" href="/tags/#GCD" title="GCD">GCD</a>
+                        <a class="tag" href="/tags/#shell" title="shell">shell</a>
+                        
+                        <a class="tag" href="/tags/#ruby" title="ruby">ruby</a>
                         
                     </div>
-                    <h1>大家好，我叫Daniel</h1>
+                    <h1>iOS自动打包</h1>
                     
                     
-                    <h2 class="subheading">2017.12.13 我决定换个新英文名，就叫Daniel.</h2>
+                    <h2 class="subheading">利用 xcdeobulid 打包项目、上传</h2>
                     
-                    <span class="meta">Posted by Daniel on October 4, 2017</span>
+                    <span class="meta">Posted by BY on April 20, 2017</span>
                 </div>
             </div>
         </div>
@@ -383,82 +385,161 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-				<h2 id="dispatchqueue">DispatchQueue</h2>
+				<blockquote>
+  <p>利用xcode的命令行工具 <code class="highlighter-rouge">xcdeobulid</code> 进行项目的编译打包，生成ipa包，并上传到fir</p>
+</blockquote>
 
-<p>Swift 中，对 GCD 语法进行了彻底改写。引入了 <code class="highlighter-rouge">DispatchQueue</code> 这个类。</p>
+<h1 id="前言">前言</h1>
+<p>现在网上的自动打包教程几乎都还是<code class="highlighter-rouge">xcodebuild + xcrun</code>的方式先生成<code class="highlighter-rouge">.app</code>包 再生成<code class="highlighter-rouge">.ipa</code>包,结果弄了一整天硬是没成功~</p>
 
-<p>先来看看在一个异步队列中读取数据， 然后再返回主线程更新 UI， 这种操作在新的 Swift 语法中是这样的：</p>
+<p>后来发现<code class="highlighter-rouge">PackageApplication is deprecated</code>，悲剧。然后手动压缩的 <code class="highlighter-rouge">.ipa</code>包因为签名问题无法装到手机上。</p>
 
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">DispatchQueue</span><span class="o">.</span><span class="nf">global</span><span class="p">()</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
+<p>后来用了<code class="highlighter-rouge">archive + -exportArchive</code>终于可以了~</p>
 
-    <span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
+<h1 id="正文">正文</h1>
 
-		<span class="c1">// 更新UI操作</span>
+<h2 id="xcodebuild">Xcodebuild</h2>
 
-    <span class="p">}</span>
+<p><strong>xcodebuild</strong> 的使用可以用 <code class="highlighter-rouge">man xcodebuild</code>查看。</p>
 
-<span class="p">}</span>
+<p>查看项目详情</p>
 
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># cd 项目主目录
+xcodebuild -list
 </code></pre></div></div>
 
-<p><code class="highlighter-rouge">DispatchQueue.global().async</code> 相当于使用全局队列进行异步操作。然后在调用 <code class="highlighter-rouge">DispatchQueue.main.async</code> 使用主线程更新相应的 UI 内容。</p>
+<p>输出项目的信息</p>
 
-<h2 id="优先级">优先级</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Information about project "StackGameSceneKit":
+    Targets:
+        StackGameSceneKit
+        StackGameSceneKitTests
 
-<p>新的 GCD 引入了 QoS (Quality of Service) 的概念。</p>
+    Build Configurations:
+        Debug
+        Release
 
-<p>先看看下面的代码：</p>
+    If no build configuration is specified and -scheme is not passed then "Release" is used.
 
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">DispatchQueue</span><span class="o">.</span><span class="nf">global</span><span class="p">(</span><span class="nv">qos</span><span class="p">:</span> <span class="o">.</span><span class="n">userInitiated</span><span class="p">)</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
-
-<span class="p">}</span>
-
+    Schemes:
+        StackGameSceneKit
 </code></pre></div></div>
 
-<p>QoS 对应的就是 <code class="highlighter-rouge">Global Queue</code> 中的优先级。 其优先级由最低的 <code class="highlighter-rouge">background</code> 到最高的 <code class="highlighter-rouge">userInteractive</code> 共五个，还有一个未定义的 <code class="highlighter-rouge">unspecified</code>。</p>
+<p>要留意 <code class="highlighter-rouge">Configurations</code>，<code class="highlighter-rouge">Schemes</code>这两个属性。</p>
 
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">background</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
+<h2 id="自动打包流程">自动打包流程</h2>
 
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">utility</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
+<h3 id="生成-archive">生成 archive</h3>
 
-<span class="kd">public</span> <span class="kd">static</span> <span class="kd">let</span> <span class="err">`</span><span class="k">default</span><span class="err">`</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
+<p>生成archive的命令是 <code class="highlighter-rouge">xcodebuild archive</code></p>
 
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">userInitiated</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">userInteractive</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">unspecified</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-</code></pre></div></div>
-
-<h2 id="自定义-queue">自定义 Queue</h2>
-
-<p>除了直接使用 <code class="highlighter-rouge">DispatchQueue.global().async</code> 这种封装好的代码外，还可以通过<code class="highlighter-rouge">DispatchWorkItem</code> 自定义队列的优先级，特性：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="nv">queue</span> <span class="o">=</span> <span class="kt">DispatchQueue</span><span class="p">(</span><span class="nv">label</span><span class="p">:</span> <span class="s">"swift_queue"</span><span class="p">)</span>
-<span class="k">let</span> <span class="nv">dispatchworkItem</span> <span class="o">=</span> <span class="kt">DispatchWorkItem</span><span class="p">(</span><span class="nv">qos</span><span class="p">:</span> <span class="o">.</span><span class="n">userInitiated</span><span class="p">,</span> <span class="nv">flags</span><span class="p">:</span> <span class="o">.</span><span class="n">inheritQoS</span><span class="p">)</span> <span class="p">{</span>
-    
-<span class="p">}</span>
-<span class="n">queue</span><span class="o">.</span><span class="nf">async</span><span class="p">(</span><span class="nv">execute</span><span class="p">:</span> <span class="n">dispatchworkItem</span><span class="p">)</span>
-
-</code></pre></div></div>
-<h2 id="gcd定时器">GCD定时器</h2>
-
-<p>Swift 中 <code class="highlighter-rouge">dispatch_time</code>的用法改成了：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="nv">delay</span> <span class="o">=</span> <span class="kt">DispatchTime</span><span class="o">.</span><span class="nf">now</span><span class="p">()</span> <span class="o">+</span> <span class="o">.</span><span class="nf">seconds</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
-<span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="nf">asyncAfter</span><span class="p">(</span><span class="nv">deadline</span><span class="p">:</span> <span class="n">delay</span><span class="p">)</span> <span class="p">{</span> 
-    
-<span class="p">}</span>
-</code></pre></div></div>
-
-<p>相较与OC来说更易读了：</p>
-
-<div class="language-objc highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">let</span> <span class="n">dispatch_time</span> <span class="o">=</span> <span class="n">dispatch_time</span><span class="p">(</span><span class="n">DISPATCH_TIME_NOW</span><span class="p">,</span> <span class="n">Int64</span><span class="p">(</span><span class="mi">60</span> <span class="o">*</span> <span class="n">NSEC_PER_SEC</span><span class="p">))</span>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>xcodebuild archive -workspace ${project_name}.xcworkspace \
+               -scheme ${scheme_name} \
+               -configuration ${build_configuration} \
+               -archivePath ${export_archive_path}
 </code></pre></div></div>
 
 <ul>
-  <li>参考 <a href="https://www.swiftcafe.io/2016/10/16/swift-gcd/">GCD 在 Swift 3 中的玩儿法</a></li>
+  <li>
+    <p>参数一：项目类型，，如果是混合项目 workspace 就用 <code class="highlighter-rouge">-workspace</code>，如果是 project 就用 <code class="highlighter-rouge">-project</code></p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">-scheme</code>：项目名，上面<code class="highlighter-rouge">xcodebuild -list</code>中的 <code class="highlighter-rouge">Schemes</code></p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">-configuration </code>：编译类型，在<code class="highlighter-rouge">configuration</code>选择, <code class="highlighter-rouge">Debug</code> 或者 <code class="highlighter-rouge">Release</code></p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">-archivePath</code>：生成 archive 包的路径，需要精确到 <code class="highlighter-rouge">xx/xx.archive</code></p>
+  </li>
 </ul>
+
+<p>首先需要创建一个<code class="highlighter-rouge">AdHocExportOptions.plist</code>文件</p>
+
+<h3 id="导出ipa包">导出ipa包</h3>
+
+<p>导出<code class="highlighter-rouge">.ipa</code>包经常会出现错误，<del>在ruby2.4.0版本中会报错，所以请使用其他版本的ruby</del>,最初的原因是使用了 ruby2.4.0 进行编译时出现的错误。</p>
+
+<p>解决方法是低版本的 ruby 进行编译，如使用系统版本：<code class="highlighter-rouge">rvm use system</code>。后面升级macOS系统（10.12.5）后发现 ruby2.4.0 能成功 导出ipa包了。</p>
+
+<p>导出ipa包使用命令：<code class="highlighter-rouge">xcodebuild  -exportArchive</code></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>xcodebuild  -exportArchive \
+            -archivePath ${export_archive_path} \
+            -exportPath ${export_ipa_path} \
+            -exportOptionsPlist ${ExportOptionsPlistPath}
+</code></pre></div></div>
+
+<ul>
+  <li><code class="highlighter-rouge">archivePath</code>：上面生成 archive 的路径</li>
+  <li><code class="highlighter-rouge">-exportPath</code>：导出 ipa包 的路径</li>
+  <li><code class="highlighter-rouge">exportOptionsPlist</code>：导出 ipa包 类型，需要指定格式的<code class="highlighter-rouge">plist</code>文件，分别是<code class="highlighter-rouge">AppStroe</code>、<code class="highlighter-rouge">AdHoc</code>、<code class="highlighter-rouge">Enterprise</code>,如下图</li>
+</ul>
+
+<p><img src="https://ww3.sinaimg.cn/large/006tNc79gy1ff1bcz534ij30g609uq48.jpg" alt="" /></p>
+
+<p>选择这三个类别需要分别创建三个<code class="highlighter-rouge">plist</code>文件：</p>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">AdHocExportOptionsPlist.plist</code></p>
+
+    <p><img src="https://ww3.sinaimg.cn/large/006tNc79gy1ff1bhmwvxfj30ax01pdfu.jpg" alt="" /></p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">AppStoreExportOptionsPlist.plist</code></p>
+
+    <p><img src="https://ww3.sinaimg.cn/large/006tNc79gy1ff1bijdlsgj30bh01st8q.jpg" alt="" /></p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">EnterpriseExportOptionsPlist.plist</code></p>
+
+    <p><img src="https://ww4.sinaimg.cn/large/006tNc79gy1ff1bishpk8j30be01sglm.jpg" alt="" /></p>
+  </li>
+</ul>
+
+<h3 id="上传到-fir">上传到 Fir</h3>
+
+<p>将项目上传到 <a href="https://fir.im">Fir</a></p>
+
+<p>下载 <a href="https://github.com/FIRHQ/fir-cli/blob/master/doc/install.md">fir 命令行工具</a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem install fir-cli
+</code></pre></div></div>
+
+<p>获取 fir 的 API Token（右上角）</p>
+
+<p><img src="https://ww3.sinaimg.cn/large/006tNc79gy1ff28ccsqhyj304t07bwei.jpg" alt="" /></p>
+
+<p>上传</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fir publish "ipa_Path" -T "firApiToken"
+</code></pre></div></div>
+
+<h2 id="自动打包脚本">自动打包脚本</h2>
+
+<p><del>再次提醒，请不要使用 ruby 2.4.0 运行该脚本！</del>，若在 ruby 2.4.0 下编译失败，请切换低版本的ruby。</p>
+
+<p>切换完毕记得重新安装 fir 命令行工具。</p>
+
+<p>脚本我fork了 <a href="https://github.com/jkpang/PPAutoPackageScript">jkpang</a> 的脚本进行修改，添加了自动上传到 fir 的功能。</p>
+
+<p>使用方法在Github上有详细介绍。</p>
+
+<p>GitHub：<a href="https://github.com/qiubaiying/iOSAutoArchiveScript">https://github.com/qiubaiying/iOSAutoArchiveScript</a></p>
+
+<h3 id="利用-自定义终端指令-简化打包过程">利用 自定义终端指令 简化打包过程</h3>
+
+<p>以zsh为例:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>open ~/.zshrc 添加自定义命令 cd + sh
+
+alias mybuild='cd 项目地址/iOSAutoArchiveScript/ &amp;&amp;  sh 项目地址/iOSAutoArchiveScript/iOSAutoArchiveScript.sh' 这样打开终端输入`mybuild`，就可以轻松实现一键打包上传了
+</code></pre></div></div>
+
+<blockquote>
+  <p>本文首次发布于 <a href="http://qiubaiying.github.io">BY Blog</a>, 作者 <a href="http://github.com/qiubaiying">@柏荧(BY)</a> ,转载请保留原文链接.</p>
+</blockquote>
 
 
                 <hr style="visibility: hidden;">
@@ -467,13 +548,6 @@
 
 
                 <ul class="pager">
-                    
-                    <li class="previous">
-                        <a href="/2017/10/04/GCD-%E5%9C%A8-Swift-%E4%B8%AD%E7%9A%84%E7%94%A8%E6%B3%95/" data-toggle="tooltip" data-placement="top" title="GCD 在 Swift 中的用法">
-                        Previous<br>
-                        <span>GCD 在 Swift 中的用法</span>
-                        </a>
-                    </li>
                     
                     
                 </ul>
@@ -573,8 +647,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "qiubaiying";
-    var disqus_identifier = "/2017/10/04/Good-Day";
-    var disqus_url = "http://localhost:4000/2017/10/04/Good-Day/";
+    var disqus_identifier = "";
+    var disqus_url = "http://localhost:4000/backup/2017-04-20-iOS%E8%87%AA%E5%8A%A8%E6%89%93%E5%8C%85/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

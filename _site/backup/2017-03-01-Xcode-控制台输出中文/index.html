@@ -10,7 +10,7 @@
     <meta name="keywords"  content="到处挖坑的小智 | Artificial Intelligence | EndPoint | Programmer">
     <meta name="theme-color" content="#000000">
     
-    <title>大家好，我叫Daniel - 明智的博客 | About Daniel</title>
+    <title>Xcode 控制台输出中文 - 明智的博客 | About Daniel</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -22,7 +22,7 @@
     <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="http://localhost:4000/2017/10/04/Good-Day/">
+    <link rel="canonical" href="http://localhost:4000/backup/2017-03-01-Xcode-%E6%8E%A7%E5%88%B6%E5%8F%B0%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -334,13 +334,13 @@
 
     <!-- Image to hack wechat -->
 <!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
-<!-- <img src="/img/home-bg-art.jpg" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-cook.jpg" width="0" height="0"> -->
 
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
         position: relative;
-        background-image: url('/img/home-bg-art.jpg')
+        background-image: url('/img/post-bg-cook.jpg')
     }
 
     
@@ -355,17 +355,17 @@
                         
                         <a class="tag" href="/tags/#iOS" title="iOS">iOS</a>
                         
-                        <a class="tag" href="/tags/#Swift" title="Swift">Swift</a>
+                        <a class="tag" href="/tags/#Xcode" title="Xcode">Xcode</a>
                         
-                        <a class="tag" href="/tags/#GCD" title="GCD">GCD</a>
+                        <a class="tag" href="/tags/#macOS" title="macOS">macOS</a>
                         
                     </div>
-                    <h1>大家好，我叫Daniel</h1>
+                    <h1>Xcode 控制台输出中文</h1>
                     
                     
-                    <h2 class="subheading">2017.12.13 我决定换个新英文名，就叫Daniel.</h2>
+                    <h2 class="subheading">在 Xcode 控制台输出中文的方法</h2>
                     
-                    <span class="meta">Posted by Daniel on October 4, 2017</span>
+                    <span class="meta">Posted by BY on March 1, 2017</span>
                 </div>
             </div>
         </div>
@@ -383,82 +383,172 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-				<h2 id="dispatchqueue">DispatchQueue</h2>
+				<blockquote>
+  <p>重写 NSArray、NSSet、NSDictionary 的输出方法，在Xcode实现中文（Unicode）字符在控制台的输出</p>
+</blockquote>
 
-<p>Swift 中，对 GCD 语法进行了彻底改写。引入了 <code class="highlighter-rouge">DispatchQueue</code> 这个类。</p>
+<h2 id="原理">原理</h2>
+<p>Xcode 控制台中在输出 NSArray、NSSet、NSDictionary 时，其中的中文字符会变成Unicode编码 如<code class="highlighter-rouge">"\U67cf\U8367"</code>.</p>
 
-<p>先来看看在一个异步队列中读取数据， 然后再返回主线程更新 UI， 这种操作在新的 Swift 语法中是这样的：</p>
+<p>我们通过分类重写这些类的输出方法即可实现在控制台输出中文：</p>
 
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">DispatchQueue</span><span class="o">.</span><span class="nf">global</span><span class="p">()</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> - (NSString *)descriptionWithLocale:(id)locale indent:(NSUInteger)level
+</code></pre></div></div>
 
-    <span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
+<h2 id="效果">效果</h2>
+<p>先看看效果：</p>
 
-		<span class="c1">// 更新UI操作</span>
+<p>创建一个字典并输出:</p>
 
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>NSData *strData = [@"str -&gt; data格式的字符串" dataUsingEncoding:NSUTF8StringEncoding];
+
+NSData *dicData = [NSJSONSerialization dataWithJSONObject:@{@"key0": @"字典 -&gt; data 的数据",}
+                                                      options:NSJSONWritingPrettyPrinted
+                                                        error:nil];
+
+NSMutableSet *set = [NSMutableSet setWithArray:@[@"set0",
+                                                 strData,
+                                                 dicData]];
+NSDictionary *dic = @{@"name"  : @"BY",
+                       @"My bolg" : @"http://qiubaiying.top",
+                       @"count" : @(11),
+                       @"strData" : strData,
+                       @"dicData" : dicData,
+                       @"set"     : set,
+                       @"Unicode" : @"😀😁🤣😂😄",
+                       @"contact" : @[@"小智:http://qiubaiying.top",
+                                      @"GitHub:https://github.com/qiubaiying",
+                                      @"简书:https://http://www.jianshu.com/u/e71990ada2fd"]};
+NSLog(@"%@", dic);
+</code></pre></div></div>
+
+<p>输出结果：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2017-03-01 10:36:45.709 BYFoundationLog_Demo[1657:53604] {
+    "My bolg" = "http://qiubaiying.top";
+    Unicode = "\Ud83d\Ude00\Ud83d\Ude01\Ud83e\Udd23\Ud83d\Ude02\Ud83d\Ude04";
+    contact =     (
+        "BY Blog:http://qiubaiying.top",
+        "GitHub:https://github.com/qiubaiying",
+        "\U7b80\U4e66:https://http://www.jianshu.com/u/e71990ada2fd"
+    );
+    count = 11;
+    dicData = &lt;7b0a2020 226b6579 3022203a 2022e5ad 97e585b8 202d3e20 64617461 20e79a84 e695b0e6 8dae220a 7d&gt;;
+    name = BY;
+    set = "{(\n    &lt;73747220 2d3e2064 617461e6 a0bce5bc 8fe79a84 e5ad97e7 aca6e4b8 b2&gt;,\n    set0,\n    &lt;7b0a2020 226b6579 3022203a 2022e5ad 97e585b8 202d3e20 64617461 20e79a84 e695b0e6 8dae220a 7d&gt;\n)}";
+    strData = &lt;73747220 2d3e2064 617461e6 a0bce5bc 8fe79a84 e5ad97e7 aca6e4b8 b2&gt;;
+}
+</code></pre></div></div>
+
+<p>将<code class="highlighter-rouge">BYFoundationLog.m</code>拖入项目，再次运行</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2017-03-01 10:35:52.545 BYFoundationLog_Demo[1635:52772] 	{
+	set = 	{(
+		"str -&gt; data格式的字符串",
+		"set0",
+			{
+			key0 = "字典 -&gt; data 的数据",
+		},
+	)},
+	Unicode = "😀😁🤣😂😄",
+	strData = "str -&gt; data格式的字符串",
+	count = 11,
+	dicData = 	{
+		key0 = "字典 -&gt; data 的数据",
+	},
+	contact = 	(
+		"BY Blog:http://qiubaiying.top",
+		"GitHub:https://github.com/qiubaiying",
+		"简书:https://http://www.jianshu.com/u/e71990ada2fd",
+	),
+	name = "BY",
+	My bolg = "http://qiubaiying.top",
+}
+</code></pre></div></div>
+
+<h2 id="实现方法">实现方法</h2>
+
+<p>以 <code class="highlighter-rouge">NSArray</code> 为例：</p>
+
+<p>创建一个 <code class="highlighter-rouge">NSArray</code> 的分类，重写输出方法</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">@implementation</span> <span class="nc">NSArray</span> <span class="p">(</span><span class="nl">Log</span><span class="p">)</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nf">descriptionWithLocale</span><span class="p">:(</span><span class="n">id</span><span class="p">)</span><span class="nv">locale</span> <span class="nf">indent</span><span class="p">:(</span><span class="n">NSUInteger</span><span class="p">)</span><span class="nv">level</span> <span class="p">{</span>
+    <span class="n">NSMutableString</span> <span class="o">*</span><span class="n">desc</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableString</span> <span class="nf">string</span><span class="p">];</span>
+    
+    <span class="n">NSMutableString</span> <span class="o">*</span><span class="n">tabString</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSMutableString</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">initWithCapacity</span><span class="p">:</span><span class="n">level</span><span class="p">];</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">NSUInteger</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">level</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">[</span><span class="n">tabString</span> <span class="nf">appendString</span><span class="p">:</span><span class="s">@"</span><span class="se">\t</span><span class="s">"</span><span class="p">];</span>
     <span class="p">}</span>
-
-<span class="p">}</span>
-
-</code></pre></div></div>
-
-<p><code class="highlighter-rouge">DispatchQueue.global().async</code> 相当于使用全局队列进行异步操作。然后在调用 <code class="highlighter-rouge">DispatchQueue.main.async</code> 使用主线程更新相应的 UI 内容。</p>
-
-<h2 id="优先级">优先级</h2>
-
-<p>新的 GCD 引入了 QoS (Quality of Service) 的概念。</p>
-
-<p>先看看下面的代码：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">DispatchQueue</span><span class="o">.</span><span class="nf">global</span><span class="p">(</span><span class="nv">qos</span><span class="p">:</span> <span class="o">.</span><span class="n">userInitiated</span><span class="p">)</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
-
-<span class="p">}</span>
-
-</code></pre></div></div>
-
-<p>QoS 对应的就是 <code class="highlighter-rouge">Global Queue</code> 中的优先级。 其优先级由最低的 <code class="highlighter-rouge">background</code> 到最高的 <code class="highlighter-rouge">userInteractive</code> 共五个，还有一个未定义的 <code class="highlighter-rouge">unspecified</code>。</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">background</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">utility</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="kd">let</span> <span class="err">`</span><span class="k">default</span><span class="err">`</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">userInitiated</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">userInteractive</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">unspecified</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-</code></pre></div></div>
-
-<h2 id="自定义-queue">自定义 Queue</h2>
-
-<p>除了直接使用 <code class="highlighter-rouge">DispatchQueue.global().async</code> 这种封装好的代码外，还可以通过<code class="highlighter-rouge">DispatchWorkItem</code> 自定义队列的优先级，特性：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="nv">queue</span> <span class="o">=</span> <span class="kt">DispatchQueue</span><span class="p">(</span><span class="nv">label</span><span class="p">:</span> <span class="s">"swift_queue"</span><span class="p">)</span>
-<span class="k">let</span> <span class="nv">dispatchworkItem</span> <span class="o">=</span> <span class="kt">DispatchWorkItem</span><span class="p">(</span><span class="nv">qos</span><span class="p">:</span> <span class="o">.</span><span class="n">userInitiated</span><span class="p">,</span> <span class="nv">flags</span><span class="p">:</span> <span class="o">.</span><span class="n">inheritQoS</span><span class="p">)</span> <span class="p">{</span>
     
-<span class="p">}</span>
-<span class="n">queue</span><span class="o">.</span><span class="nf">async</span><span class="p">(</span><span class="nv">execute</span><span class="p">:</span> <span class="n">dispatchworkItem</span><span class="p">)</span>
-
-</code></pre></div></div>
-<h2 id="gcd定时器">GCD定时器</h2>
-
-<p>Swift 中 <code class="highlighter-rouge">dispatch_time</code>的用法改成了：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="nv">delay</span> <span class="o">=</span> <span class="kt">DispatchTime</span><span class="o">.</span><span class="nf">now</span><span class="p">()</span> <span class="o">+</span> <span class="o">.</span><span class="nf">seconds</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
-<span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="nf">asyncAfter</span><span class="p">(</span><span class="nv">deadline</span><span class="p">:</span> <span class="n">delay</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="n">NSString</span> <span class="o">*</span><span class="n">tab</span> <span class="o">=</span> <span class="s">@""</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">level</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">tab</span> <span class="o">=</span> <span class="n">tabString</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="p">[</span><span class="n">desc</span> <span class="nf">appendString</span><span class="p">:</span><span class="s">@"</span><span class="se">\t</span><span class="s">(</span><span class="se">\n</span><span class="s">"</span><span class="p">];</span>
     
+    <span class="k">for</span> <span class="p">(</span><span class="n">id</span> <span class="n">obj</span> <span class="k">in</span> <span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">([</span><span class="n">obj</span> <span class="nf">isKindOfClass</span><span class="p">:[</span><span class="n">NSDictionary</span> <span class="nf">class</span><span class="p">]]</span>
+            <span class="o">||</span> <span class="p">[</span><span class="n">obj</span> <span class="nf">isKindOfClass</span><span class="p">:[</span><span class="n">NSArray</span> <span class="nf">class</span><span class="p">]]</span>
+            <span class="o">||</span> <span class="p">[</span><span class="n">obj</span> <span class="nf">isKindOfClass</span><span class="p">:[</span><span class="n">NSSet</span> <span class="nf">class</span><span class="p">]])</span> <span class="p">{</span>
+            <span class="n">NSString</span> <span class="o">*</span><span class="n">str</span> <span class="o">=</span> <span class="p">[((</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="p">)</span><span class="n">obj</span><span class="p">)</span> <span class="nf">descriptionWithLocale</span><span class="p">:</span><span class="n">locale</span> <span class="nf">indent</span><span class="p">:</span><span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+            <span class="p">[</span><span class="n">desc</span> <span class="nf">appendFormat</span><span class="p">:</span><span class="s">@"%@</span><span class="se">\t</span><span class="s">%@,</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">tab</span><span class="p">,</span> <span class="n">str</span><span class="p">];</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">([</span><span class="n">obj</span> <span class="nf">isKindOfClass</span><span class="p">:[</span><span class="n">NSString</span> <span class="nf">class</span><span class="p">]])</span> <span class="p">{</span>
+            <span class="p">[</span><span class="n">desc</span> <span class="nf">appendFormat</span><span class="p">:</span><span class="s">@"%@</span><span class="se">\t\"</span><span class="s">%@</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">tab</span><span class="p">,</span> <span class="n">obj</span><span class="p">];</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">([</span><span class="n">obj</span> <span class="nf">isKindOfClass</span><span class="p">:[</span><span class="n">NSData</span> <span class="nf">class</span><span class="p">]])</span> <span class="p">{</span>
+            
+            <span class="n">NSError</span> <span class="o">*</span><span class="n">error</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+            <span class="n">NSObject</span> <span class="o">*</span><span class="n">result</span> <span class="o">=</span>  <span class="p">[</span><span class="n">NSJSONSerialization</span> <span class="nf">JSONObjectWithData</span><span class="p">:</span><span class="n">obj</span>
+                                                                <span class="nf">options</span><span class="p">:</span><span class="n">NSJSONReadingMutableContainers</span>
+                                                                  <span class="nl">error:</span><span class="o">&amp;</span><span class="n">error</span><span class="p">];</span>
+            
+            <span class="k">if</span> <span class="p">(</span><span class="n">error</span> <span class="o">==</span> <span class="nb">nil</span> <span class="o">&amp;&amp;</span> <span class="n">result</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">([</span><span class="n">result</span> <span class="nf">isKindOfClass</span><span class="p">:[</span><span class="n">NSDictionary</span> <span class="nf">class</span><span class="p">]]</span>
+                    <span class="o">||</span> <span class="p">[</span><span class="n">result</span> <span class="nf">isKindOfClass</span><span class="p">:[</span><span class="n">NSArray</span> <span class="nf">class</span><span class="p">]]</span>
+                    <span class="o">||</span> <span class="p">[</span><span class="n">result</span> <span class="nf">isKindOfClass</span><span class="p">:[</span><span class="n">NSSet</span> <span class="nf">class</span><span class="p">]])</span> <span class="p">{</span>
+                    <span class="n">NSString</span> <span class="o">*</span><span class="n">str</span> <span class="o">=</span> <span class="p">[((</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="p">)</span><span class="n">result</span><span class="p">)</span> <span class="nf">descriptionWithLocale</span><span class="p">:</span><span class="n">locale</span> <span class="nf">indent</span><span class="p">:</span><span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+                    <span class="p">[</span><span class="n">desc</span> <span class="nf">appendFormat</span><span class="p">:</span><span class="s">@"%@</span><span class="se">\t</span><span class="s">%@,</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">tab</span><span class="p">,</span> <span class="n">str</span><span class="p">];</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">([</span><span class="n">obj</span> <span class="nf">isKindOfClass</span><span class="p">:[</span><span class="n">NSString</span> <span class="nf">class</span><span class="p">]])</span> <span class="p">{</span>
+                    <span class="p">[</span><span class="n">desc</span> <span class="nf">appendFormat</span><span class="p">:</span><span class="s">@"%@</span><span class="se">\t\"</span><span class="s">%@</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">tab</span><span class="p">,</span> <span class="n">result</span><span class="p">];</span>
+                <span class="p">}</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="k">@try</span> <span class="p">{</span>
+                    <span class="n">NSString</span> <span class="o">*</span><span class="n">str</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSString</span> <span class="nf">alloc</span><span class="p">]</span> <span class="nf">initWithData</span><span class="p">:</span><span class="n">obj</span> <span class="nf">encoding</span><span class="p">:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">str</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="p">[</span><span class="n">desc</span> <span class="nf">appendFormat</span><span class="p">:</span><span class="s">@"%@</span><span class="se">\t\"</span><span class="s">%@</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">tab</span><span class="p">,</span> <span class="n">str</span><span class="p">];</span>
+                    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                        <span class="p">[</span><span class="n">desc</span> <span class="nf">appendFormat</span><span class="p">:</span><span class="s">@"%@</span><span class="se">\t</span><span class="s">%@,</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">tab</span><span class="p">,</span> <span class="n">obj</span><span class="p">];</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+                <span class="k">@catch</span> <span class="p">(</span><span class="n">NSException</span> <span class="o">*</span><span class="n">exception</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="p">[</span><span class="n">desc</span> <span class="nf">appendFormat</span><span class="p">:</span><span class="s">@"%@</span><span class="se">\t</span><span class="s">%@,</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">tab</span><span class="p">,</span> <span class="n">obj</span><span class="p">];</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="p">[</span><span class="n">desc</span> <span class="nf">appendFormat</span><span class="p">:</span><span class="s">@"%@</span><span class="se">\t</span><span class="s">%@,</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">tab</span><span class="p">,</span> <span class="n">obj</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="p">[</span><span class="n">desc</span> <span class="nf">appendFormat</span><span class="p">:</span><span class="s">@"%@)"</span><span class="p">,</span> <span class="n">tab</span><span class="p">];</span>
+    
+    <span class="k">return</span> <span class="n">desc</span><span class="p">;</span>
 <span class="p">}</span>
+
+<span class="k">@end</span>
+
 </code></pre></div></div>
 
-<p>相较与OC来说更易读了：</p>
+<p>NSSet、NSDictionary 与 NSArray 实现方法类似</p>
 
-<div class="language-objc highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">let</span> <span class="n">dispatch_time</span> <span class="o">=</span> <span class="n">dispatch_time</span><span class="p">(</span><span class="n">DISPATCH_TIME_NOW</span><span class="p">,</span> <span class="n">Int64</span><span class="p">(</span><span class="mi">60</span> <span class="o">*</span> <span class="n">NSEC_PER_SEC</span><span class="p">))</span>
-</code></pre></div></div>
+<h2 id="代码下载">代码下载</h2>
 
-<ul>
-  <li>参考 <a href="https://www.swiftcafe.io/2016/10/16/swift-gcd/">GCD 在 Swift 3 中的玩儿法</a></li>
-</ul>
+<p>代码及Demo地址：<a href="https://github.com/qiubaiying/BYFoundationLog">GitHub</a></p>
+
+<h2 id="使用方法">使用方法</h2>
+
+<p>直接将 <code class="highlighter-rouge">BYFoundationLog.m</code> 文件拖入项目中就能使用</p>
+
 
 
                 <hr style="visibility: hidden;">
@@ -467,13 +557,6 @@
 
 
                 <ul class="pager">
-                    
-                    <li class="previous">
-                        <a href="/2017/10/04/GCD-%E5%9C%A8-Swift-%E4%B8%AD%E7%9A%84%E7%94%A8%E6%B3%95/" data-toggle="tooltip" data-placement="top" title="GCD 在 Swift 中的用法">
-                        Previous<br>
-                        <span>GCD 在 Swift 中的用法</span>
-                        </a>
-                    </li>
                     
                     
                 </ul>
@@ -573,8 +656,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "qiubaiying";
-    var disqus_identifier = "/2017/10/04/Good-Day";
-    var disqus_url = "http://localhost:4000/2017/10/04/Good-Day/";
+    var disqus_identifier = "";
+    var disqus_url = "http://localhost:4000/backup/2017-03-01-Xcode-%E6%8E%A7%E5%88%B6%E5%8F%B0%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

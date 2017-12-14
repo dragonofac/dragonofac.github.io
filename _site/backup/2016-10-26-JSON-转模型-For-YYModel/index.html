@@ -10,7 +10,7 @@
     <meta name="keywords"  content="到处挖坑的小智 | Artificial Intelligence | EndPoint | Programmer">
     <meta name="theme-color" content="#000000">
     
-    <title>大家好，我叫Daniel - 明智的博客 | About Daniel</title>
+    <title>JSON转模型 For YYModel - 明智的博客 | About Daniel</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -22,7 +22,7 @@
     <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="http://localhost:4000/2017/10/04/Good-Day/">
+    <link rel="canonical" href="http://localhost:4000/backup/2016-10-26-JSON-%E8%BD%AC%E6%A8%A1%E5%9E%8B-For-YYModel/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -334,13 +334,13 @@
 
     <!-- Image to hack wechat -->
 <!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
-<!-- <img src="/img/home-bg-art.jpg" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-ios9-web.jpg" width="0" height="0"> -->
 
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
         position: relative;
-        background-image: url('/img/home-bg-art.jpg')
+        background-image: url('/img/post-bg-ios9-web.jpg')
     }
 
     
@@ -355,17 +355,15 @@
                         
                         <a class="tag" href="/tags/#iOS" title="iOS">iOS</a>
                         
-                        <a class="tag" href="/tags/#Swift" title="Swift">Swift</a>
-                        
-                        <a class="tag" href="/tags/#GCD" title="GCD">GCD</a>
+                        <a class="tag" href="/tags/#开发技巧" title="开发技巧">开发技巧</a>
                         
                     </div>
-                    <h1>大家好，我叫Daniel</h1>
+                    <h1>JSON转模型 For YYModel</h1>
                     
                     
-                    <h2 class="subheading">2017.12.13 我决定换个新英文名，就叫Daniel.</h2>
+                    <h2 class="subheading">使用 YYModel库 快速完成 JSON 转模型</h2>
                     
-                    <span class="meta">Posted by Daniel on October 4, 2017</span>
+                    <span class="meta">Posted by BY on October 26, 2016</span>
                 </div>
             </div>
         </div>
@@ -383,82 +381,68 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-				<h2 id="dispatchqueue">DispatchQueue</h2>
+				<blockquote>
+  <p>JSON转模型是我们做iOS开发的基础技能，本文将通过<a href="https://github.com/ibireme/YYModel">YYModel</a>这个框架安全快速的完成JSON到模型的转换，其中还会介绍到一款好用的插件<a href="https://github.com/EnjoySR/ESJsonFormat-Xcode">ESJsonFormat</a>。</p>
+</blockquote>
 
-<p>Swift 中，对 GCD 语法进行了彻底改写。引入了 <code class="highlighter-rouge">DispatchQueue</code> 这个类。</p>
+<h1 id="1首先创建模型类">1、首先创建模型类</h1>
+<p>创建模型类我们可以通过<a href="https://github.com/EnjoySR/ESJsonFormat-Xcode">ESJsonFormat</a>这款插件快速完成。</p>
 
-<p>先来看看在一个异步队列中读取数据， 然后再返回主线程更新 UI， 这种操作在新的 Swift 语法中是这样的：</p>
+<p>使用方法：</p>
 
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">DispatchQueue</span><span class="o">.</span><span class="nf">global</span><span class="p">()</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
+<p>将光标移动到代码行中 如下图的13行</p>
 
-    <span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
+<p>然后点击<code class="highlighter-rouge">Window</code>-&gt;<code class="highlighter-rouge">ESJsonFormat</code>-&gt;<code class="highlighter-rouge">Input JSON Window</code>调出窗口</p>
 
-		<span class="c1">// 更新UI操作</span>
+<p><img src="http://ww1.sinaimg.cn/large/006y8lVagw1f95tr49ed7j30no0csdir.jpg" alt="" /></p>
 
-    <span class="p">}</span>
+<p>在窗口中输入你要解析的JSON文本，如下图：</p>
 
-<span class="p">}</span>
+<p><img src="http://ww4.sinaimg.cn/large/006y8lVagw1f97s13l4b9j30jv0e8dhp.jpg" alt="" /></p>
+
+<p>按<code class="highlighter-rouge">Enter</code>继续，然后神奇的一幕发生了</p>
+
+<p><img src="http://ww3.sinaimg.cn/large/006y8lVagw1f97s46k95tj30k30dydj9.jpg" alt="" /></p>
+
+<p><img src="http://ww1.sinaimg.cn/large/006y8lVagw1f97s6yp9hmj30iw0b840m.jpg" alt="" /></p>
+
+<p>看到在.h中 所有的属性自动为你填上，而且帮你选好了类型</p>
+
+<p>.m 也为你声明了<code class="highlighter-rouge">list</code>中成员的类型，不过这里需要稍作修改，因为我们需要用到YYModel进行解析，所以方法名改成<code class="highlighter-rouge">modelContainerPropertyGenericClass</code></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+ (NSDictionary *)modelContainerPropertyGenericClass {
+    return @{@"list" : [List class]};
+}
+
+</code></pre></div></div>
+
+<p>还有问题就是属性中出现关键字<code class="highlighter-rouge">id</code>，我们需要将id改为<code class="highlighter-rouge">teacherId</code></p>
+
+<p>然后在.m的<code class="highlighter-rouge">implementation</code>中声明,将字典的的<code class="highlighter-rouge">id</code></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+ (NSDictionary *)modelCustomPropertyMapper {
+    return @{@"teacherId" : @"id"};
+}
+</code></pre></div></div>
+
+<p>这样，模型的创建就完成了，剩下的就是用YYModel进行解析了</p>
+
+<h1 id="2使用yymodel进行解析">2、使用YYModel进行解析</h1>
+
+<p>解析很简单，就只需要一句话</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 将 JSON (NSData,NSString,NSDictionary) 转换为 Model:
+Model *model = [Model yy_modelWithJSON:json];
+
+// 或者
+Model *model = [[Model alloc] init];
+[model yy_modelSetWithDictionary:json];
 
 </code></pre></div></div>
 
-<p><code class="highlighter-rouge">DispatchQueue.global().async</code> 相当于使用全局队列进行异步操作。然后在调用 <code class="highlighter-rouge">DispatchQueue.main.async</code> 使用主线程更新相应的 UI 内容。</p>
+<p>到此，简便快速的完成了JSON到模型的转换。</p>
 
-<h2 id="优先级">优先级</h2>
-
-<p>新的 GCD 引入了 QoS (Quality of Service) 的概念。</p>
-
-<p>先看看下面的代码：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">DispatchQueue</span><span class="o">.</span><span class="nf">global</span><span class="p">(</span><span class="nv">qos</span><span class="p">:</span> <span class="o">.</span><span class="n">userInitiated</span><span class="p">)</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
-
-<span class="p">}</span>
-
-</code></pre></div></div>
-
-<p>QoS 对应的就是 <code class="highlighter-rouge">Global Queue</code> 中的优先级。 其优先级由最低的 <code class="highlighter-rouge">background</code> 到最高的 <code class="highlighter-rouge">userInteractive</code> 共五个，还有一个未定义的 <code class="highlighter-rouge">unspecified</code>。</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">background</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">utility</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="kd">let</span> <span class="err">`</span><span class="k">default</span><span class="err">`</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">userInitiated</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">userInteractive</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">unspecified</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-</code></pre></div></div>
-
-<h2 id="自定义-queue">自定义 Queue</h2>
-
-<p>除了直接使用 <code class="highlighter-rouge">DispatchQueue.global().async</code> 这种封装好的代码外，还可以通过<code class="highlighter-rouge">DispatchWorkItem</code> 自定义队列的优先级，特性：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="nv">queue</span> <span class="o">=</span> <span class="kt">DispatchQueue</span><span class="p">(</span><span class="nv">label</span><span class="p">:</span> <span class="s">"swift_queue"</span><span class="p">)</span>
-<span class="k">let</span> <span class="nv">dispatchworkItem</span> <span class="o">=</span> <span class="kt">DispatchWorkItem</span><span class="p">(</span><span class="nv">qos</span><span class="p">:</span> <span class="o">.</span><span class="n">userInitiated</span><span class="p">,</span> <span class="nv">flags</span><span class="p">:</span> <span class="o">.</span><span class="n">inheritQoS</span><span class="p">)</span> <span class="p">{</span>
-    
-<span class="p">}</span>
-<span class="n">queue</span><span class="o">.</span><span class="nf">async</span><span class="p">(</span><span class="nv">execute</span><span class="p">:</span> <span class="n">dispatchworkItem</span><span class="p">)</span>
-
-</code></pre></div></div>
-<h2 id="gcd定时器">GCD定时器</h2>
-
-<p>Swift 中 <code class="highlighter-rouge">dispatch_time</code>的用法改成了：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="nv">delay</span> <span class="o">=</span> <span class="kt">DispatchTime</span><span class="o">.</span><span class="nf">now</span><span class="p">()</span> <span class="o">+</span> <span class="o">.</span><span class="nf">seconds</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
-<span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="nf">asyncAfter</span><span class="p">(</span><span class="nv">deadline</span><span class="p">:</span> <span class="n">delay</span><span class="p">)</span> <span class="p">{</span> 
-    
-<span class="p">}</span>
-</code></pre></div></div>
-
-<p>相较与OC来说更易读了：</p>
-
-<div class="language-objc highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">let</span> <span class="n">dispatch_time</span> <span class="o">=</span> <span class="n">dispatch_time</span><span class="p">(</span><span class="n">DISPATCH_TIME_NOW</span><span class="p">,</span> <span class="n">Int64</span><span class="p">(</span><span class="mi">60</span> <span class="o">*</span> <span class="n">NSEC_PER_SEC</span><span class="p">))</span>
-</code></pre></div></div>
-
-<ul>
-  <li>参考 <a href="https://www.swiftcafe.io/2016/10/16/swift-gcd/">GCD 在 Swift 3 中的玩儿法</a></li>
-</ul>
+<p>最后，<a href="http://www.jianshu.com/p/25e678fa43d3">这里附上一篇YYModel的使用</a></p>
 
 
                 <hr style="visibility: hidden;">
@@ -467,13 +451,6 @@
 
 
                 <ul class="pager">
-                    
-                    <li class="previous">
-                        <a href="/2017/10/04/GCD-%E5%9C%A8-Swift-%E4%B8%AD%E7%9A%84%E7%94%A8%E6%B3%95/" data-toggle="tooltip" data-placement="top" title="GCD 在 Swift 中的用法">
-                        Previous<br>
-                        <span>GCD 在 Swift 中的用法</span>
-                        </a>
-                    </li>
                     
                     
                 </ul>
@@ -573,8 +550,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "qiubaiying";
-    var disqus_identifier = "/2017/10/04/Good-Day";
-    var disqus_url = "http://localhost:4000/2017/10/04/Good-Day/";
+    var disqus_identifier = "";
+    var disqus_url = "http://localhost:4000/backup/2016-10-26-JSON-%E8%BD%AC%E6%A8%A1%E5%9E%8B-For-YYModel/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

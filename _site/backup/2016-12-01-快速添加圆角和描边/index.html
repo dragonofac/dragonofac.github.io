@@ -10,7 +10,7 @@
     <meta name="keywords"  content="到处挖坑的小智 | Artificial Intelligence | EndPoint | Programmer">
     <meta name="theme-color" content="#000000">
     
-    <title>大家好，我叫Daniel - 明智的博客 | About Daniel</title>
+    <title>快速添加圆角和描边 - 明智的博客 | About Daniel</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -22,7 +22,7 @@
     <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="http://localhost:4000/2017/10/04/Good-Day/">
+    <link rel="canonical" href="http://localhost:4000/backup/2016-12-01-%E5%BF%AB%E9%80%9F%E6%B7%BB%E5%8A%A0%E5%9C%86%E8%A7%92%E5%92%8C%E6%8F%8F%E8%BE%B9/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -334,13 +334,13 @@
 
     <!-- Image to hack wechat -->
 <!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
-<!-- <img src="/img/home-bg-art.jpg" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-ios9-web.jpg" width="0" height="0"> -->
 
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
         position: relative;
-        background-image: url('/img/home-bg-art.jpg')
+        background-image: url('/img/post-bg-ios9-web.jpg')
     }
 
     
@@ -355,17 +355,15 @@
                         
                         <a class="tag" href="/tags/#iOS" title="iOS">iOS</a>
                         
-                        <a class="tag" href="/tags/#Swift" title="Swift">Swift</a>
-                        
-                        <a class="tag" href="/tags/#GCD" title="GCD">GCD</a>
+                        <a class="tag" href="/tags/#开发技巧" title="开发技巧">开发技巧</a>
                         
                     </div>
-                    <h1>大家好，我叫Daniel</h1>
+                    <h1>快速添加圆角和描边</h1>
                     
                     
-                    <h2 class="subheading">2017.12.13 我决定换个新英文名，就叫Daniel.</h2>
+                    <h2 class="subheading">iOS 为图片添加圆角和描边的几种方式</h2>
                     
-                    <span class="meta">Posted by Daniel on October 4, 2017</span>
+                    <span class="meta">Posted by BY on December 1, 2016</span>
                 </div>
             </div>
         </div>
@@ -383,82 +381,122 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-				<h2 id="dispatchqueue">DispatchQueue</h2>
+				<h1 id="前言">前言</h1>
 
-<p>Swift 中，对 GCD 语法进行了彻底改写。引入了 <code class="highlighter-rouge">DispatchQueue</code> 这个类。</p>
+<p>对于习惯使用Storyboard的人来说，设置圆角、描边是一件比较蛋疼的事，因为苹果没有在xcode的Interface Builder上直接提供修改控件的圆角，边框设置。</p>
 
-<p>先来看看在一个异步队列中读取数据， 然后再返回主线程更新 UI， 这种操作在新的 Swift 语法中是这样的：</p>
+<p>我们来说说如何对某个控件进行圆角、描边处理：</p>
+<h1 id="初级">初级</h1>
+<p>对于一个初学者来说，如果要进行某个控件的圆角、描边设置，就要从Storyboard关联出属性，然后再对属性进行代码处理。</p>
 
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">DispatchQueue</span><span class="o">.</span><span class="nf">global</span><span class="p">()</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
+<p>如下代码：</p>
 
-    <span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>self.myButton.layer.cornerRadius = 20;
+self.myButton.layer.masksToBounds = YES;
+self.myButton.layer.borderWidth = 2;
+self.myButton.layer.borderColor = [UIColor blackColor].CGColor;
+</code></pre></div></div>
+<p>这样不仅需要Storyboard关联出属性，还要写一堆代码对属性进行设置，不得不说实在麻烦~</p>
 
-		<span class="c1">// 更新UI操作</span>
+<h1 id="中级">中级</h1>
+<p>更聪明的做法是使用Storyboard提供的Runtime Attributes为控件添加圆角描边。</p>
 
-    <span class="p">}</span>
+<p>选中控件，然后在Runtime Attributes框中输入对应的<code class="highlighter-rouge">Key</code>与<code class="highlighter-rouge">Type</code>与<code class="highlighter-rouge">Value</code>,这样程序在运行时就会通过KVC为你的控件属性进行赋值。(不仅仅是圆角、描边~)</p>
 
+<p>如下图</p>
+
+<p><img src="http://ww4.sinaimg.cn/large/7853084cgw1fabg89aeqkj207b08j74y.jpg" alt="" /></p>
+
+<p>设置圆角、描边的Key为：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>layer.borderWidth
+layer.borderColorFromUIColor
+layer.cornerRadius
+clipsToBounds
+</code></pre></div></div>
+<p>我这次在测试时，</p>
+
+<p>这样做不用关联出属性，但是需要输入大串字符串，也是不够方便。</p>
+
+<h1 id="高级">高级</h1>
+
+<p>创建UIView的分类，使用<code class="highlighter-rouge">IBInspectable</code>+ <code class="highlighter-rouge">IB_DESIGNABLE</code>关键字：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#import &lt;UIKit/UIKit.h&gt;
+</span>
+<span class="n">IB_DESIGNABLE</span>
+
+<span class="k">@interface</span> <span class="nc">UIView</span> <span class="p">(</span><span class="nl">Inspectable</span><span class="p">)</span>
+
+<span class="k">@property</span><span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span><span class="n">assign</span><span class="p">)</span> <span class="n">IBInspectable</span> <span class="n">CGFloat</span> <span class="n">cornerRadius</span><span class="p">;</span>
+<span class="k">@property</span><span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span><span class="n">assign</span><span class="p">)</span> <span class="n">IBInspectable</span> <span class="n">CGFloat</span> <span class="n">borderWidth</span><span class="p">;</span>
+<span class="k">@property</span><span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span><span class="n">assign</span><span class="p">)</span> <span class="n">IBInspectable</span> <span class="n">UIColor</span> <span class="o">*</span><span class="n">borderColor</span><span class="p">;</span>
+
+<span class="k">@end</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#import "UIView+Inspectable.h"
+</span>
+<span class="k">@implementation</span> <span class="nc">UIView</span> <span class="p">(</span><span class="nl">Inspectable</span><span class="p">)</span>
+
+<span class="k">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setCornerRadius</span><span class="p">:(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nv">cornerRadius</span><span class="p">{</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">masksToBounds</span> <span class="o">=</span> <span class="nb">YES</span><span class="p">;</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">cornerRadius</span> <span class="o">=</span> <span class="n">cornerRadius</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setBorderColor</span><span class="p">:(</span><span class="n">UIColor</span> <span class="o">*</span><span class="p">)</span><span class="nv">borderColor</span><span class="p">{</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">borderColor</span> <span class="o">=</span> <span class="n">borderColor</span><span class="p">.</span><span class="n">CGColor</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setBorderWidth</span><span class="p">:(</span><span class="n">CGFloat</span><span class="p">)</span><span class="nv">borderWidth</span><span class="p">{</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">borderWidth</span> <span class="o">=</span> <span class="n">borderWidth</span><span class="p">;</span>
 <span class="p">}</span>
 
-</code></pre></div></div>
-
-<p><code class="highlighter-rouge">DispatchQueue.global().async</code> 相当于使用全局队列进行异步操作。然后在调用 <code class="highlighter-rouge">DispatchQueue.main.async</code> 使用主线程更新相应的 UI 内容。</p>
-
-<h2 id="优先级">优先级</h2>
-
-<p>新的 GCD 引入了 QoS (Quality of Service) 的概念。</p>
-
-<p>先看看下面的代码：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">DispatchQueue</span><span class="o">.</span><span class="nf">global</span><span class="p">(</span><span class="nv">qos</span><span class="p">:</span> <span class="o">.</span><span class="n">userInitiated</span><span class="p">)</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
-
+<span class="k">-</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="n">cornerRadius</span><span class="p">{</span>
+    <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">cornerRadius</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="o">-</span> <span class="p">(</span><span class="n">CGFloat</span><span class="p">)</span><span class="n">borderWidth</span><span class="p">{</span>
+    <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">borderWidth</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="o">-</span> <span class="p">(</span><span class="n">UIColor</span> <span class="o">*</span><span class="p">)</span><span class="n">borderColor</span><span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">UIColor</span> <span class="nf">colorWithCGColor</span><span class="p">:</span><span class="n">self</span><span class="p">.</span><span class="n">layer</span><span class="p">.</span><span class="n">borderColor</span><span class="p">];</span>
 <span class="p">}</span>
 
+<span class="k">@end</span>
 </code></pre></div></div>
 
-<p>QoS 对应的就是 <code class="highlighter-rouge">Global Queue</code> 中的优先级。 其优先级由最低的 <code class="highlighter-rouge">background</code> 到最高的 <code class="highlighter-rouge">userInteractive</code> 共五个，还有一个未定义的 <code class="highlighter-rouge">unspecified</code>。</p>
+<p>附上：<a href="https://github.com/qiubaiying/CircularAndStroke.git">GitHub地址</a></p>
 
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">background</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
+<h4 id="直接使用">直接使用</h4>
 
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">utility</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
+<p>直接将这两个文件拖入项目中即可使用，在右边栏将会显示圆角和描边的属性设置</p>
 
-<span class="kd">public</span> <span class="kd">static</span> <span class="kd">let</span> <span class="err">`</span><span class="k">default</span><span class="err">`</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
+<p>如图：</p>
 
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">userInitiated</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
+<p><img src="http://ww4.sinaimg.cn/large/7853084cgw1facfqugjtbj20mp07v401.jpg" alt="" /></p>
 
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">userInteractive</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
+<h4 id="动态显示设置效果">动态显示设置效果</h4>
 
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">unspecified</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
+<p>直接使用的话只有在运行时才能看到效果，</p>
+
+<p>例如要实时显示一个<code class="highlighter-rouge">UIBUtton</code>圆角、描边效果，需要创建一个类继承<code class="highlighter-rouge">UIButton</code></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#import &lt;UIKit/UIKit.h&gt;
+#import "UIView+Inspectable.h"
+</span>
+<span class="k">@interface</span> <span class="nc">myButton</span> <span class="p">:</span> <span class="nc">UIButton</span>
+
+<span class="k">@end</span>
 </code></pre></div></div>
 
-<h2 id="自定义-queue">自定义 Queue</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#import "myButton.h"
+</span>
+<span class="k">@implementation</span> <span class="nc">myButton</span>
 
-<p>除了直接使用 <code class="highlighter-rouge">DispatchQueue.global().async</code> 这种封装好的代码外，还可以通过<code class="highlighter-rouge">DispatchWorkItem</code> 自定义队列的优先级，特性：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="nv">queue</span> <span class="o">=</span> <span class="kt">DispatchQueue</span><span class="p">(</span><span class="nv">label</span><span class="p">:</span> <span class="s">"swift_queue"</span><span class="p">)</span>
-<span class="k">let</span> <span class="nv">dispatchworkItem</span> <span class="o">=</span> <span class="kt">DispatchWorkItem</span><span class="p">(</span><span class="nv">qos</span><span class="p">:</span> <span class="o">.</span><span class="n">userInitiated</span><span class="p">,</span> <span class="nv">flags</span><span class="p">:</span> <span class="o">.</span><span class="n">inheritQoS</span><span class="p">)</span> <span class="p">{</span>
-    
-<span class="p">}</span>
-<span class="n">queue</span><span class="o">.</span><span class="nf">async</span><span class="p">(</span><span class="nv">execute</span><span class="p">:</span> <span class="n">dispatchworkItem</span><span class="p">)</span>
-
-</code></pre></div></div>
-<h2 id="gcd定时器">GCD定时器</h2>
-
-<p>Swift 中 <code class="highlighter-rouge">dispatch_time</code>的用法改成了：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="nv">delay</span> <span class="o">=</span> <span class="kt">DispatchTime</span><span class="o">.</span><span class="nf">now</span><span class="p">()</span> <span class="o">+</span> <span class="o">.</span><span class="nf">seconds</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
-<span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="nf">asyncAfter</span><span class="p">(</span><span class="nv">deadline</span><span class="p">:</span> <span class="n">delay</span><span class="p">)</span> <span class="p">{</span> 
-    
-<span class="p">}</span>
+<span class="k">@end</span>
 </code></pre></div></div>
 
-<p>相较与OC来说更易读了：</p>
+<p>只要将button的Class选择该空白类即可</p>
 
-<div class="language-objc highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">let</span> <span class="n">dispatch_time</span> <span class="o">=</span> <span class="n">dispatch_time</span><span class="p">(</span><span class="n">DISPATCH_TIME_NOW</span><span class="p">,</span> <span class="n">Int64</span><span class="p">(</span><span class="mi">60</span> <span class="o">*</span> <span class="n">NSEC_PER_SEC</span><span class="p">))</span>
-</code></pre></div></div>
-
-<ul>
-  <li>参考 <a href="https://www.swiftcafe.io/2016/10/16/swift-gcd/">GCD 在 Swift 3 中的玩儿法</a></li>
-</ul>
+<p>关于<code class="highlighter-rouge">IBInspectable</code>与<code class="highlighter-rouge">IB_DESIGNABLE</code>的使用详情可以参考这篇文章<a href="http://www.jianshu.com/p/a90e44ba1f2b">《谈不完美的IBDesignable/IBInspectable可视化效果编程》</a></p>
 
 
                 <hr style="visibility: hidden;">
@@ -467,13 +505,6 @@
 
 
                 <ul class="pager">
-                    
-                    <li class="previous">
-                        <a href="/2017/10/04/GCD-%E5%9C%A8-Swift-%E4%B8%AD%E7%9A%84%E7%94%A8%E6%B3%95/" data-toggle="tooltip" data-placement="top" title="GCD 在 Swift 中的用法">
-                        Previous<br>
-                        <span>GCD 在 Swift 中的用法</span>
-                        </a>
-                    </li>
                     
                     
                 </ul>
@@ -573,8 +604,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "qiubaiying";
-    var disqus_identifier = "/2017/10/04/Good-Day";
-    var disqus_url = "http://localhost:4000/2017/10/04/Good-Day/";
+    var disqus_identifier = "";
+    var disqus_url = "http://localhost:4000/backup/2016-12-01-%E5%BF%AB%E9%80%9F%E6%B7%BB%E5%8A%A0%E5%9C%86%E8%A7%92%E5%92%8C%E6%8F%8F%E8%BE%B9/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

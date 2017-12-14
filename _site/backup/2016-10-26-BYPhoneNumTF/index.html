@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="为自己留退路的人，最终都走在退路上。">
+    <meta name="keywords"  content="到处挖坑的小智 | Artificial Intelligence | EndPoint | Programmer">
+    <meta name="theme-color" content="#000000">
+    
+    <title>BYPhoneNumTF - 明智的博客 | About Daniel</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Safari Webpage Icon    by-BY -->
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://localhost:4000/backup/2016-10-26-BYPhoneNumTF/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Daniel's Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2016-01-06-ReactiveCocoa-%E8%BF%9B%E9%98%B6/">ReactiveCocoa 进阶</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2016-10-10-iOS-%E6%89%8B%E5%8A%BF%E4%B8%8E%E5%8F%98%E5%BD%A2/">iOS手势与变形</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2016-10-18-Xcode-Debug-%E5%A4%A7%E5%85%A8/">Xcode Debug 大全</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2016-10-26-BYPhoneNumTF/">BYPhoneNumTF</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2016-10-26-JSON-%E8%BD%AC%E6%A8%A1%E5%9E%8B-For-YYModel/">JSON转模型 For YYModel</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2016-11-10-Objective-C%20Runtime%E8%AF%A6%E8%A7%A3/">Objective-C Runtime 详解</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2016-11-15-iOS%E5%99%AA%E9%9F%B3%E8%AE%A1%E6%A8%A1%E5%9E%8B/">iOS噪音计</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2016-11-18-Objective-C-Runtime-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">Objective-C Runtime 基本使用</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2016-11-28-Objective-C-RunLoop/">Objective-C：RunLoop</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2016-12-01-%E5%BF%AB%E9%80%9F%E6%B7%BB%E5%8A%A0%E5%9C%86%E8%A7%92%E5%92%8C%E6%8F%8F%E8%BE%B9/">快速添加圆角和描边</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2016-12-07-%E5%BF%BD%E7%95%A5-Xcode8-%E4%B8%AD%E7%9A%84%E6%B3%A8%E9%87%8A%E8%AD%A6%E5%91%8A%E2%9A%A0%EF%B8%8F/">忽略 Xcode 8 中的注释警告</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2016-12-13-%E5%AE%9A%E6%97%B6%E5%99%A8%E4%BD%A0%E7%9C%9F%E7%9A%84%E4%BC%9A%E4%BD%BF%E7%94%A8%E5%90%97%EF%BC%9F/">定时器 你真的会使用吗？</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2016-12-21-Objective-C-Category/">Objective-C：Category</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2016-12-26-ReactiveCocoa-%E5%9F%BA%E7%A1%80/">ReactiveCocoa 基础</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-02-04-Hello-2017/">Hello 2017</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-02-06-%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/">快速搭建个人博客</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-02-14-%E9%9A%8F%E4%BE%BF%E8%81%8A%E8%81%8A/">随便聊聊</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-02-15-Git%E6%8C%87%E4%BB%A4%E6%95%B4%E7%90%86/">Git指令整理</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-02-15-Mac-%E6%96%87%E6%9C%AC%E8%BD%AC%E9%9F%B3%E9%A2%91/">Mac 文本转音频</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-02-16-Git-%E4%BB%A3%E7%A0%81%E5%9B%9E%E6%BB%9A/">Git 代码回滚</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-02-22-Mac-%E6%96%87%E4%BB%B6%E7%9A%84%E9%9A%90%E8%97%8F%E4%B8%8E%E6%98%BE%E7%A4%BA/">Mac 文件的隐藏与显示</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-02-22-%E4%BD%BF%E7%94%A8-.gitignore-%E5%BF%BD%E7%95%A5-git-%E4%BB%93%E5%BA%93%E4%B8%AD%E7%9A%84%E6%96%87%E4%BB%B6/">使用 .gitignore 忽略 Git 仓库中的文件</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-03-01-Xcode-%E6%8E%A7%E5%88%B6%E5%8F%B0%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87/">Xcode 控制台输出中文</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-03-06-Swift-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/">Swift 代理模式</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-03-08-CocoaPods%E5%85%AC%E6%9C%89%E4%BB%93%E5%BA%93%E7%9A%84%E5%88%9B%E5%BB%BA/">CocoaPods公有仓库的创建</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-03-10-CocoaPods%E7%A7%81%E6%9C%89%E4%BB%93%E5%BA%93%E7%9A%84%E5%88%9B%E5%BB%BA/">CocoaPods私有仓库的创建</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-03-23-AsyncDisplayKit-2.0-%E6%95%99%E7%A8%8B%EF%BC%9A%E5%85%A5%E9%97%A8%E3%80%8C%E8%AF%91%E3%80%8D/">AsyncDisplayKit 2.0 教程:入门「译」</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-03-30-Swift%203.1-%E7%9A%84%E6%96%B0%E5%8F%98%E5%8C%96%E3%80%8C%E8%AF%91%E3%80%8D/">Swift 3.1 的新变化「译」</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-04-07-%E5%BC%BA%E5%8C%96-Swift-%E4%B8%AD%E7%9A%84-print/">强化 swift 中的 print</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-04-13-CocoaPods-%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/">CocoaPods 安装和使用</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-04-20-iOS%E8%87%AA%E5%8A%A8%E6%89%93%E5%8C%85/">iOS自动打包</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-04-28-RVM-%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/">RVM 使用指南</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-05-03-Swift-%E7%9A%84%E6%87%92%E5%8A%A0%E8%BD%BD%E5%92%8C%E8%AE%A1%E7%AE%97%E5%9E%8B%E5%B1%9E%E6%80%A7/">Swift 的懒加载和计算型属性</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-05-04-R.swift-%E7%9A%84%E4%BD%BF%E7%94%A8/">R.swift 的使用</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-05-05-%E5%9C%A8-Swift-%E4%B8%AD%E4%BD%BF%E7%94%A8-IBInspectable/">在 Swift 中使用 IBInspectable</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-06-19-%E5%BF%AB%E9%80%9F%E9%85%8D%E7%BD%AEzsh/">快速配置zsh</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-07-04-Xcode9-%E6%97%A0%E7%BA%BF%E8%B0%83%E8%AF%95%E5%8A%9F%E8%83%BD/">Xcode9 无线调试功能</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-07-10-%E3%80%8C%E4%BD%93%E8%83%BD%E8%AE%AD%E7%BB%83%E7%90%86%E8%AE%BA%E3%80%8D%E4%B9%8B%E5%8A%9F%E8%83%BD%E6%80%A7/">「体能训练理论」之功能性</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-07-10-%E3%80%8C%E4%BD%93%E8%83%BD%E8%AE%AD%E7%BB%83%E7%90%86%E8%AE%BA%E3%80%8D%E4%B9%8B%E5%8A%A8%E5%8A%9B%E9%93%BE/">「体能训练理论」之动力链</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-07-10-%E3%80%8C%E4%BD%93%E8%83%BD%E8%AE%AD%E7%BB%83%E7%90%86%E8%AE%BA%E3%80%8D%E4%B9%8B%E9%87%91%E5%AD%97%E5%A1%94/">「体能训练理论」之金字塔</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-07-19-Swift%E7%9A%84HMAC%E5%92%8CSHA1%E5%8A%A0%E5%AF%86/">Swift的HMAC和SHA1加密</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-07-24-iTunes-Connect-%E6%9E%84%E5%BB%BA%E7%89%88%E6%9C%AC%E4%B8%8D%E6%98%BE%E7%A4%BA/">iTunes Connect 构建版本不显示</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-07-26-%E5%88%A9%E7%94%A8-Debug-Memory-Graph-%E6%A3%80%E6%B5%8B%E5%86%85%E6%B5%8B%E6%B3%84%E6%BC%8F/">利用 Debug Memory Graph 检测内测泄漏</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-2-9-Mac%E5%BF%AB%E9%80%9F%E8%B0%83%E5%87%BA%E7%BB%88%E7%AB%AF/">Mac 快速调出终端</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/backup/2017-3-07-%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E6%A0%91%E7%8A%B6(tree)%E6%98%BE%E7%A4%BA/">文件目录树状(tree)显示</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from 
+     * $toggle/$collapse will break global delegation.
+     * 
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.  
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-ios9-web.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-ios9-web.jpg')
+    }
+
+    
+</style>
+<header class="intro-header" >
+    <div class="header-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#iOS" title="iOS">iOS</a>
+                        
+                        <a class="tag" href="/tags/#轮子" title="轮子">轮子</a>
+                        
+                    </div>
+                    <h1>BYPhoneNumTF</h1>
+                    
+                    
+                    <h2 class="subheading">一个电话号码格式的文本框</h2>
+                    
+                    <span class="meta">Posted by BY on February 4, 2017</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+				<blockquote>
+  <p><strong>BYPhoneNumTF</strong> 一个电话号码格式的文本框</p>
+</blockquote>
+
+<h1 id="功能">功能</h1>
+
+<p>当在<code class="highlighter-rouge">TextField</code>输入数字时，会自动分隔为：137 9922 2299 或 137-9922-2299</p>
+
+<p>限制文本输入个数</p>
+
+<p>限制只能输入数字</p>
+<h1 id="效果">效果：</h1>
+
+<p><img src="http://ww2.sinaimg.cn/large/7853084cgw1fa3cqnu8s2g207i0dc4qp.gif" alt="" /></p>
+
+<h1 id="实现方法">实现方法</h1>
+
+<p>要实现电话号码格式的输入看似简单，但是实现起来坑非常多，至于坑是什么只有各位动手写了才能体会~</p>
+
+<p>下面我们来实现该功能：</p>
+
+<p>首先要遵守协议<code class="highlighter-rouge">&lt;UITextFieldDelegate&gt;</code></p>
+
+<p>然后在<code class="highlighter-rouge">- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string</code> 方法中实现我们的逻辑</p>
+
+<p>代码：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#import "LoginVC.h"
+</span>
+<span class="cp">#define placeholder @" "
+</span>
+<span class="k">@interface</span> <span class="nc">LoginVC</span> <span class="p">()</span> <span class="o">&lt;</span><span class="n">UITextFieldDelegate</span><span class="o">&gt;</span>
+
+<span class="k">@property</span> <span class="p">(</span><span class="n">weak</span><span class="p">,</span> <span class="n">nonatomic</span><span class="p">)</span> <span class="n">IBOutlet</span> <span class="n">UITextField</span> <span class="o">*</span><span class="n">phoneNumberTF</span><span class="p">;</span>
+
+<span class="k">@end</span>
+
+
+<span class="o">-</span> <span class="p">(</span><span class="n">BOOL</span><span class="p">)</span><span class="n">textField</span><span class="o">:</span><span class="p">(</span><span class="n">UITextField</span> <span class="o">*</span><span class="p">)</span><span class="n">textField</span> <span class="n">shouldChangeCharactersInRange</span><span class="o">:</span><span class="p">(</span><span class="n">NSRange</span><span class="p">)</span><span class="n">range</span> <span class="n">replacementString</span><span class="o">:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">string</span> <span class="p">{</span>
+
+    <span class="n">NSString</span> <span class="o">*</span><span class="n">phStr</span> <span class="o">=</span> <span class="n">placeholder</span><span class="p">;</span>
+    <span class="n">unichar</span> <span class="n">phChar</span> <span class="o">=</span> <span class="sc">' '</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">phStr</span><span class="p">.</span><span class="n">length</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">phChar</span> <span class="o">=</span> <span class="p">[</span><span class="n">phStr</span> <span class="nf">characterAtIndex</span><span class="p">:</span><span class="mi">0</span><span class="p">];</span>
+    <span class="p">}</span>
+    
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">textField</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">NSString</span><span class="o">*</span> <span class="n">text</span> <span class="o">=</span> <span class="n">textField</span><span class="p">.</span><span class="n">text</span><span class="p">;</span>
+        <span class="c1">//删除
+</span>        <span class="k">if</span><span class="p">([</span><span class="n">string</span> <span class="nf">isEqualToString</span><span class="p">:</span><span class="s">@""</span><span class="p">]){</span>
+            
+            <span class="c1">//删除一位
+</span>            <span class="k">if</span><span class="p">(</span><span class="n">range</span><span class="p">.</span><span class="n">length</span> <span class="o">==</span> <span class="mi">1</span><span class="p">){</span>
+                <span class="c1">//最后一位,遇到空格则多删除一次
+</span>                <span class="k">if</span> <span class="p">(</span><span class="n">range</span><span class="p">.</span><span class="n">location</span> <span class="o">==</span> <span class="n">text</span><span class="p">.</span><span class="n">length</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span> <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">([</span><span class="n">text</span> <span class="nf">characterAtIndex</span><span class="p">:</span><span class="n">text</span><span class="p">.</span><span class="n">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">phChar</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="p">[</span><span class="n">textField</span> <span class="nf">deleteBackward</span><span class="p">];</span>
+                    <span class="p">}</span>
+                    <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="c1">//从中间删除
+</span>                <span class="k">else</span><span class="p">{</span>
+                    <span class="n">NSInteger</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">range</span><span class="p">.</span><span class="n">location</span><span class="p">;</span>
+                    
+                    <span class="k">if</span> <span class="p">(</span><span class="n">range</span><span class="p">.</span><span class="n">location</span> <span class="o">&lt;</span> <span class="n">text</span><span class="p">.</span><span class="n">length</span> <span class="o">&amp;&amp;</span> <span class="p">[</span><span class="n">text</span> <span class="nf">characterAtIndex</span><span class="p">:</span><span class="n">range</span><span class="p">.</span><span class="n">location</span><span class="p">]</span> <span class="o">==</span> <span class="n">phChar</span> <span class="o">&amp;&amp;</span> <span class="p">[</span><span class="n">textField</span><span class="p">.</span><span class="n">selectedTextRange</span> <span class="nf">isEmpty</span><span class="p">])</span> <span class="p">{</span>
+                        <span class="p">[</span><span class="n">textField</span> <span class="nf">deleteBackward</span><span class="p">];</span>
+                        <span class="n">offset</span> <span class="o">--</span><span class="p">;</span>
+                    <span class="p">}</span>
+                    <span class="p">[</span><span class="n">textField</span> <span class="nf">deleteBackward</span><span class="p">];</span>
+                    <span class="n">textField</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="nf">_parseString</span><span class="p">:</span><span class="n">textField</span><span class="p">.</span><span class="n">text</span><span class="p">];</span>
+                    <span class="n">UITextPosition</span> <span class="o">*</span><span class="n">newPos</span> <span class="o">=</span> <span class="p">[</span><span class="n">textField</span> <span class="nf">positionFromPosition</span><span class="p">:</span><span class="n">textField</span><span class="p">.</span><span class="n">beginningOfDocument</span> <span class="nf">offset</span><span class="p">:</span><span class="n">offset</span><span class="p">];</span>
+                    <span class="n">textField</span><span class="p">.</span><span class="n">selectedTextRange</span> <span class="o">=</span> <span class="p">[</span><span class="n">textField</span> <span class="nf">textRangeFromPosition</span><span class="p">:</span><span class="n">newPos</span> <span class="nf">toPosition</span><span class="p">:</span><span class="n">newPos</span><span class="p">];</span>
+                    <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">range</span><span class="p">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">BOOL</span> <span class="n">isLast</span> <span class="o">=</span> <span class="nb">NO</span><span class="p">;</span>
+                <span class="c1">//如果是从最后一位开始
+</span>                <span class="k">if</span><span class="p">(</span><span class="n">range</span><span class="p">.</span><span class="n">location</span> <span class="o">+</span> <span class="n">range</span><span class="p">.</span><span class="n">length</span> <span class="o">==</span> <span class="n">textField</span><span class="p">.</span><span class="n">text</span><span class="p">.</span><span class="n">length</span> <span class="p">){</span>
+                    <span class="n">isLast</span> <span class="o">=</span> <span class="nb">YES</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="p">[</span><span class="n">textField</span> <span class="nf">deleteBackward</span><span class="p">];</span>
+                <span class="n">textField</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="nf">_parseString</span><span class="p">:</span><span class="n">textField</span><span class="p">.</span><span class="n">text</span><span class="p">];</span>
+                
+                <span class="n">NSInteger</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">range</span><span class="p">.</span><span class="n">location</span><span class="p">;</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">range</span><span class="p">.</span><span class="n">location</span> <span class="o">==</span> <span class="mi">3</span> <span class="o">||</span> <span class="n">range</span><span class="p">.</span><span class="n">location</span>  <span class="o">==</span> <span class="mi">8</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">offset</span> <span class="o">++</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">isLast</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="c1">//光标直接在最后一位了
+</span>                <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+                    <span class="n">UITextPosition</span> <span class="o">*</span><span class="n">newPos</span> <span class="o">=</span> <span class="p">[</span><span class="n">textField</span> <span class="nf">positionFromPosition</span><span class="p">:</span><span class="n">textField</span><span class="p">.</span><span class="n">beginningOfDocument</span> <span class="nf">offset</span><span class="p">:</span><span class="n">offset</span><span class="p">];</span>
+                    <span class="n">textField</span><span class="p">.</span><span class="n">selectedTextRange</span> <span class="o">=</span> <span class="p">[</span><span class="n">textField</span> <span class="nf">textRangeFromPosition</span><span class="p">:</span><span class="n">newPos</span> <span class="nf">toPosition</span><span class="p">:</span><span class="n">newPos</span><span class="p">];</span>
+                <span class="p">}</span>
+                
+                <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
+            <span class="p">}</span>
+            
+            <span class="k">else</span><span class="p">{</span>
+                <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        
+        <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">string</span><span class="p">.</span><span class="n">length</span> <span class="o">&gt;</span><span class="mi">0</span><span class="p">){</span>
+            
+            <span class="c1">//限制输入字符个数
+</span>            <span class="k">if</span> <span class="p">(([</span><span class="n">self</span> <span class="nf">_noneSpaseString</span><span class="p">:</span><span class="n">textField</span><span class="p">.</span><span class="n">text</span><span class="p">].</span><span class="n">length</span> <span class="o">+</span> <span class="n">string</span><span class="p">.</span><span class="n">length</span> <span class="o">-</span> <span class="n">range</span><span class="p">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">11</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
+            <span class="p">}</span>
+            
+            <span class="c1">//判断是否是纯数字(搜狗，百度输入法，数字键盘居然可以输入其他字符)
+</span>            <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="p">[</span><span class="n">self</span> <span class="nf">_isNum</span><span class="p">:</span><span class="n">string</span><span class="p">]){</span>
+                <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="p">[</span><span class="n">textField</span> <span class="nf">insertText</span><span class="p">:</span><span class="n">string</span><span class="p">];</span>
+            <span class="n">textField</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="nf">_parseString</span><span class="p">:</span><span class="n">textField</span><span class="p">.</span><span class="n">text</span><span class="p">];</span>
+            
+            <span class="n">NSInteger</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">range</span><span class="p">.</span><span class="n">location</span> <span class="o">+</span> <span class="n">string</span><span class="p">.</span><span class="n">length</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">range</span><span class="p">.</span><span class="n">location</span> <span class="o">==</span> <span class="mi">3</span> <span class="o">||</span> <span class="n">range</span><span class="p">.</span><span class="n">location</span>  <span class="o">==</span> <span class="mi">8</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">offset</span> <span class="o">++</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">UITextPosition</span> <span class="o">*</span><span class="n">newPos</span> <span class="o">=</span> <span class="p">[</span><span class="n">textField</span> <span class="nf">positionFromPosition</span><span class="p">:</span><span class="n">textField</span><span class="p">.</span><span class="n">beginningOfDocument</span> <span class="nf">offset</span><span class="p">:</span><span class="n">offset</span><span class="p">];</span>
+            <span class="n">textField</span><span class="p">.</span><span class="n">selectedTextRange</span> <span class="o">=</span> <span class="p">[</span><span class="n">textField</span> <span class="nf">textRangeFromPosition</span><span class="p">:</span><span class="n">newPos</span> <span class="nf">toPosition</span><span class="p">:</span><span class="n">newPos</span><span class="p">];</span>
+            <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
+        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+            <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
+        <span class="p">}</span>
+        
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
+    
+
+<span class="p">}</span>
+
+<span class="o">-</span> <span class="p">(</span><span class="n">NSString</span><span class="o">*</span><span class="p">)</span><span class="n">_parseString</span><span class="o">:</span><span class="p">(</span><span class="n">NSString</span><span class="o">*</span><span class="p">)</span><span class="n">string</span><span class="p">{</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">string</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">nil</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">NSMutableString</span><span class="o">*</span> <span class="n">mStr</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableString</span> <span class="nf">stringWithString</span><span class="p">:[</span><span class="n">string</span> <span class="nf">stringByReplacingOccurrencesOfString</span><span class="p">:</span><span class="n">placeholder</span> <span class="nf">withString</span><span class="p">:</span><span class="s">@""</span><span class="p">]];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">mStr</span><span class="p">.</span><span class="n">length</span> <span class="o">&gt;</span><span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">[</span><span class="n">mStr</span> <span class="nf">insertString</span><span class="p">:</span><span class="n">placeholder</span> <span class="nf">atIndex</span><span class="p">:</span><span class="mi">3</span><span class="p">];</span>
+    <span class="p">}</span><span class="k">if</span> <span class="p">(</span><span class="n">mStr</span><span class="p">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">[</span><span class="n">mStr</span> <span class="nf">insertString</span><span class="p">:</span><span class="n">placeholder</span> <span class="nf">atIndex</span><span class="p">:</span><span class="mi">8</span><span class="p">];</span>
+        
+    <span class="p">}</span>
+    
+    <span class="k">return</span>  <span class="n">mStr</span><span class="p">;</span>
+    
+<span class="p">}</span>
+
+<span class="cm">/** 获取正常电话号码（去掉空格） */</span>
+<span class="o">-</span> <span class="p">(</span><span class="n">NSString</span><span class="o">*</span><span class="p">)</span><span class="n">_noneSpaseString</span><span class="o">:</span><span class="p">(</span><span class="n">NSString</span><span class="o">*</span><span class="p">)</span><span class="n">string</span><span class="p">{</span>
+    
+    <span class="k">return</span> <span class="p">[</span><span class="n">string</span> <span class="nf">stringByReplacingOccurrencesOfString</span><span class="p">:</span><span class="n">placeholder</span> <span class="nf">withString</span><span class="p">:</span><span class="s">@""</span><span class="p">];</span>
+    
+<span class="p">}</span>
+
+<span class="o">-</span> <span class="p">(</span><span class="n">BOOL</span><span class="p">)</span><span class="n">_isNum</span><span class="o">:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">checkedNumString</span> <span class="p">{</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">checkedNumString</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="n">checkedNumString</span> <span class="o">=</span> <span class="p">[</span><span class="n">checkedNumString</span> <span class="nf">stringByTrimmingCharactersInSet</span><span class="p">:[</span><span class="n">NSCharacterSet</span> <span class="nf">decimalDigitCharacterSet</span><span class="p">]];</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="n">checkedNumString</span><span class="p">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
+    
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>###封装方法</p>
+
+<p>需要实现的代码就是要这么多，但这些代码写在ViewController显得太臃肿了，所以我对代码进行了封装:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//
+//  BYPhoneNumTF.h
+//
+//  Created by BY on 16/12/2.
+//  Copyright © 2016年 BY. All rights reserved.
+//  电话号码类型的文本输入框，且只能输入数字
+//  输入显示：137 9922 1234 或 137-9922-1234
+//  使用方法：在XIB中的TextField继承该类即可
+//  修改占位符placeholder即可改变样式
+</span>
+<span class="cp">#import &lt;UIKit/UIKit.h&gt;
+</span>
+<span class="c1">// @" " or @"-"
+</span><span class="cp">#define placeholder @" "
+</span>
+<span class="k">@interface</span> <span class="nc">BYPhoneNumTF</span> <span class="p">:</span> <span class="nc">UITextField</span>
+
+<span class="cm">/** 去掉格式的电话号码 */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">nonatomic</span><span class="p">,</span> <span class="n">strong</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">plainPhoneNum</span><span class="p">;</span>
+
+<span class="k">@end</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//
+//  BYPhoneNumTF.m
+//  dev-Jack
+//
+//  Created by BY on 16/12/2.
+//  Copyright © 2016年 Jack. All rights reserved.
+//
+</span>
+<span class="cp">#import "BYPhoneNumTF.h"
+</span>
+
+<span class="k">@interface</span> <span class="nc">BYPhoneNumTF</span> <span class="p">()</span><span class="o">&lt;</span><span class="n">UITextFieldDelegate</span><span class="o">&gt;</span>
+
+<span class="k">@end</span>
+
+<span class="k">@implementation</span> <span class="nc">BYPhoneNumTF</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">plainPhoneNum</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">self</span> <span class="nf">_noneSpaseString</span><span class="p">:</span><span class="n">self</span><span class="p">.</span><span class="n">text</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">awakeFromNib</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">super</span> <span class="nf">awakeFromNib</span><span class="p">];</span>
+    <span class="n">self</span><span class="p">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">self</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="o">-</span> <span class="p">(</span><span class="n">BOOL</span><span class="p">)</span><span class="n">textField</span><span class="o">:</span><span class="p">(</span><span class="n">UITextField</span> <span class="o">*</span><span class="p">)</span><span class="n">textField</span> <span class="n">shouldChangeCharactersInRange</span><span class="o">:</span><span class="p">(</span><span class="n">NSRange</span><span class="p">)</span><span class="n">range</span> <span class="n">replacementString</span><span class="o">:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">string</span> <span class="p">{</span>
+
+    <span class="n">NSString</span> <span class="o">*</span><span class="n">phStr</span> <span class="o">=</span> <span class="n">placeholder</span><span class="p">;</span>
+    <span class="n">unichar</span> <span class="n">phChar</span> <span class="o">=</span> <span class="sc">' '</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">phStr</span><span class="p">.</span><span class="n">length</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">phChar</span> <span class="o">=</span> <span class="p">[</span><span class="n">phStr</span> <span class="nf">characterAtIndex</span><span class="p">:</span><span class="mi">0</span><span class="p">];</span>
+    <span class="p">}</span>
+    
+    
+    <span class="k">if</span> <span class="p">(</span><span class="n">textField</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">NSString</span><span class="o">*</span> <span class="n">text</span> <span class="o">=</span> <span class="n">textField</span><span class="p">.</span><span class="n">text</span><span class="p">;</span>
+        <span class="c1">//删除
+</span>        <span class="k">if</span><span class="p">([</span><span class="n">string</span> <span class="nf">isEqualToString</span><span class="p">:</span><span class="s">@""</span><span class="p">]){</span>
+            
+            <span class="c1">//删除一位
+</span>            <span class="k">if</span><span class="p">(</span><span class="n">range</span><span class="p">.</span><span class="n">length</span> <span class="o">==</span> <span class="mi">1</span><span class="p">){</span>
+                <span class="c1">//最后一位,遇到空格则多删除一次
+</span>                <span class="k">if</span> <span class="p">(</span><span class="n">range</span><span class="p">.</span><span class="n">location</span> <span class="o">==</span> <span class="n">text</span><span class="p">.</span><span class="n">length</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span> <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">([</span><span class="n">text</span> <span class="nf">characterAtIndex</span><span class="p">:</span><span class="n">text</span><span class="p">.</span><span class="n">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">phChar</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="p">[</span><span class="n">textField</span> <span class="nf">deleteBackward</span><span class="p">];</span>
+                    <span class="p">}</span>
+                    <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="c1">//从中间删除
+</span>                <span class="k">else</span><span class="p">{</span>
+                    <span class="n">NSInteger</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">range</span><span class="p">.</span><span class="n">location</span><span class="p">;</span>
+                    
+                    <span class="k">if</span> <span class="p">(</span><span class="n">range</span><span class="p">.</span><span class="n">location</span> <span class="o">&lt;</span> <span class="n">text</span><span class="p">.</span><span class="n">length</span> <span class="o">&amp;&amp;</span> <span class="p">[</span><span class="n">text</span> <span class="nf">characterAtIndex</span><span class="p">:</span><span class="n">range</span><span class="p">.</span><span class="n">location</span><span class="p">]</span> <span class="o">==</span> <span class="n">phChar</span> <span class="o">&amp;&amp;</span> <span class="p">[</span><span class="n">textField</span><span class="p">.</span><span class="n">selectedTextRange</span> <span class="nf">isEmpty</span><span class="p">])</span> <span class="p">{</span>
+                        <span class="p">[</span><span class="n">textField</span> <span class="nf">deleteBackward</span><span class="p">];</span>
+                        <span class="n">offset</span> <span class="o">--</span><span class="p">;</span>
+                    <span class="p">}</span>
+                    <span class="p">[</span><span class="n">textField</span> <span class="nf">deleteBackward</span><span class="p">];</span>
+                    <span class="n">textField</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="nf">_parseString</span><span class="p">:</span><span class="n">textField</span><span class="p">.</span><span class="n">text</span><span class="p">];</span>
+                    <span class="n">UITextPosition</span> <span class="o">*</span><span class="n">newPos</span> <span class="o">=</span> <span class="p">[</span><span class="n">textField</span> <span class="nf">positionFromPosition</span><span class="p">:</span><span class="n">textField</span><span class="p">.</span><span class="n">beginningOfDocument</span> <span class="nf">offset</span><span class="p">:</span><span class="n">offset</span><span class="p">];</span>
+                    <span class="n">textField</span><span class="p">.</span><span class="n">selectedTextRange</span> <span class="o">=</span> <span class="p">[</span><span class="n">textField</span> <span class="nf">textRangeFromPosition</span><span class="p">:</span><span class="n">newPos</span> <span class="nf">toPosition</span><span class="p">:</span><span class="n">newPos</span><span class="p">];</span>
+                    <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">range</span><span class="p">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">BOOL</span> <span class="n">isLast</span> <span class="o">=</span> <span class="nb">NO</span><span class="p">;</span>
+                <span class="c1">//如果是从最后一位开始
+</span>                <span class="k">if</span><span class="p">(</span><span class="n">range</span><span class="p">.</span><span class="n">location</span> <span class="o">+</span> <span class="n">range</span><span class="p">.</span><span class="n">length</span> <span class="o">==</span> <span class="n">textField</span><span class="p">.</span><span class="n">text</span><span class="p">.</span><span class="n">length</span> <span class="p">){</span>
+                    <span class="n">isLast</span> <span class="o">=</span> <span class="nb">YES</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="p">[</span><span class="n">textField</span> <span class="nf">deleteBackward</span><span class="p">];</span>
+                <span class="n">textField</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="nf">_parseString</span><span class="p">:</span><span class="n">textField</span><span class="p">.</span><span class="n">text</span><span class="p">];</span>
+                
+                <span class="n">NSInteger</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">range</span><span class="p">.</span><span class="n">location</span><span class="p">;</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">range</span><span class="p">.</span><span class="n">location</span> <span class="o">==</span> <span class="mi">3</span> <span class="o">||</span> <span class="n">range</span><span class="p">.</span><span class="n">location</span>  <span class="o">==</span> <span class="mi">8</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="n">offset</span> <span class="o">++</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">isLast</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="c1">//光标直接在最后一位了
+</span>                <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+                    <span class="n">UITextPosition</span> <span class="o">*</span><span class="n">newPos</span> <span class="o">=</span> <span class="p">[</span><span class="n">textField</span> <span class="nf">positionFromPosition</span><span class="p">:</span><span class="n">textField</span><span class="p">.</span><span class="n">beginningOfDocument</span> <span class="nf">offset</span><span class="p">:</span><span class="n">offset</span><span class="p">];</span>
+                    <span class="n">textField</span><span class="p">.</span><span class="n">selectedTextRange</span> <span class="o">=</span> <span class="p">[</span><span class="n">textField</span> <span class="nf">textRangeFromPosition</span><span class="p">:</span><span class="n">newPos</span> <span class="nf">toPosition</span><span class="p">:</span><span class="n">newPos</span><span class="p">];</span>
+                <span class="p">}</span>
+                
+                <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
+            <span class="p">}</span>
+            
+            <span class="k">else</span><span class="p">{</span>
+                <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        
+        <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">string</span><span class="p">.</span><span class="n">length</span> <span class="o">&gt;</span><span class="mi">0</span><span class="p">){</span>
+            
+            <span class="c1">//限制输入字符个数
+</span>            <span class="k">if</span> <span class="p">(([</span><span class="n">self</span> <span class="nf">_noneSpaseString</span><span class="p">:</span><span class="n">textField</span><span class="p">.</span><span class="n">text</span><span class="p">].</span><span class="n">length</span> <span class="o">+</span> <span class="n">string</span><span class="p">.</span><span class="n">length</span> <span class="o">-</span> <span class="n">range</span><span class="p">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">11</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
+            <span class="p">}</span>
+            
+            <span class="c1">//判断是否是纯数字(搜狗，百度输入法，数字键盘居然可以输入其他字符)
+</span>            <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="p">[</span><span class="n">self</span> <span class="nf">_isNum</span><span class="p">:</span><span class="n">string</span><span class="p">]){</span>
+                <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="p">[</span><span class="n">textField</span> <span class="nf">insertText</span><span class="p">:</span><span class="n">string</span><span class="p">];</span>
+            <span class="n">textField</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="nf">_parseString</span><span class="p">:</span><span class="n">textField</span><span class="p">.</span><span class="n">text</span><span class="p">];</span>
+            
+            <span class="n">NSInteger</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">range</span><span class="p">.</span><span class="n">location</span> <span class="o">+</span> <span class="n">string</span><span class="p">.</span><span class="n">length</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">range</span><span class="p">.</span><span class="n">location</span> <span class="o">==</span> <span class="mi">3</span> <span class="o">||</span> <span class="n">range</span><span class="p">.</span><span class="n">location</span>  <span class="o">==</span> <span class="mi">8</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">offset</span> <span class="o">++</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">UITextPosition</span> <span class="o">*</span><span class="n">newPos</span> <span class="o">=</span> <span class="p">[</span><span class="n">textField</span> <span class="nf">positionFromPosition</span><span class="p">:</span><span class="n">textField</span><span class="p">.</span><span class="n">beginningOfDocument</span> <span class="nf">offset</span><span class="p">:</span><span class="n">offset</span><span class="p">];</span>
+            <span class="n">textField</span><span class="p">.</span><span class="n">selectedTextRange</span> <span class="o">=</span> <span class="p">[</span><span class="n">textField</span> <span class="nf">textRangeFromPosition</span><span class="p">:</span><span class="n">newPos</span> <span class="nf">toPosition</span><span class="p">:</span><span class="n">newPos</span><span class="p">];</span>
+            <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
+        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+            <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
+        <span class="p">}</span>
+        
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
+    
+
+<span class="p">}</span>
+
+<span class="o">-</span> <span class="p">(</span><span class="n">NSString</span><span class="o">*</span><span class="p">)</span><span class="n">_parseString</span><span class="o">:</span><span class="p">(</span><span class="n">NSString</span><span class="o">*</span><span class="p">)</span><span class="n">string</span><span class="p">{</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">string</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">nil</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">NSMutableString</span><span class="o">*</span> <span class="n">mStr</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableString</span> <span class="nf">stringWithString</span><span class="p">:[</span><span class="n">string</span> <span class="nf">stringByReplacingOccurrencesOfString</span><span class="p">:</span><span class="n">placeholder</span> <span class="nf">withString</span><span class="p">:</span><span class="s">@""</span><span class="p">]];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">mStr</span><span class="p">.</span><span class="n">length</span> <span class="o">&gt;</span><span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">[</span><span class="n">mStr</span> <span class="nf">insertString</span><span class="p">:</span><span class="n">placeholder</span> <span class="nf">atIndex</span><span class="p">:</span><span class="mi">3</span><span class="p">];</span>
+    <span class="p">}</span><span class="k">if</span> <span class="p">(</span><span class="n">mStr</span><span class="p">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">[</span><span class="n">mStr</span> <span class="nf">insertString</span><span class="p">:</span><span class="n">placeholder</span> <span class="nf">atIndex</span><span class="p">:</span><span class="mi">8</span><span class="p">];</span>
+        
+    <span class="p">}</span>
+    
+    <span class="k">return</span>  <span class="n">mStr</span><span class="p">;</span>
+    
+<span class="p">}</span>
+
+<span class="cm">/** 获取正常电话号码（去掉空格） */</span>
+<span class="o">-</span> <span class="p">(</span><span class="n">NSString</span><span class="o">*</span><span class="p">)</span><span class="n">_noneSpaseString</span><span class="o">:</span><span class="p">(</span><span class="n">NSString</span><span class="o">*</span><span class="p">)</span><span class="n">string</span><span class="p">{</span>
+    
+    <span class="k">return</span> <span class="p">[</span><span class="n">string</span> <span class="nf">stringByReplacingOccurrencesOfString</span><span class="p">:</span><span class="n">placeholder</span> <span class="nf">withString</span><span class="p">:</span><span class="s">@""</span><span class="p">];</span>
+    
+<span class="p">}</span>
+
+<span class="o">-</span> <span class="p">(</span><span class="n">BOOL</span><span class="p">)</span><span class="n">_isNum</span><span class="o">:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">checkedNumString</span> <span class="p">{</span>
+    
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">checkedNumString</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="n">checkedNumString</span> <span class="o">=</span> <span class="p">[</span><span class="n">checkedNumString</span> <span class="nf">stringByTrimmingCharactersInSet</span><span class="p">:[</span><span class="n">NSCharacterSet</span> <span class="nf">decimalDigitCharacterSet</span><span class="p">]];</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="n">checkedNumString</span><span class="p">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
+    
+<span class="p">}</span>
+
+
+<span class="k">@end</span>
+
+</code></pre></div></div>
+
+<h1 id="使用方法">使用方法</h1>
+
+<p>在storyboard中的<code class="highlighter-rouge">TextField</code>控件的Calss类型选择该类<code class="highlighter-rouge">BYPhoneNumTF</code>即可。</p>
+
+<p>代码及Demo下载地址：<a href="https://github.com/qiubaiying/BYPhoneNumTF">BYPhoneNumTF</a></p>
+
+
+                <hr style="visibility: hidden;">
+
+                
+
+
+                <ul class="pager">
+                    
+                    
+                </ul>
+
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+        				
+                            
+                				<a href="/tags/#iOS" title="iOS" rel="3">
+                                    iOS
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#Swift" title="Swift" rel="3">
+                                    Swift
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#GCD" title="GCD" rel="2">
+                                    GCD
+                                </a>
+                            
+        				
+        			</div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+                    
+                        <li><a href="http://zhengwuyang.com">WY</a></li>
+                    
+                        <li><a href="http://www.jianshu.com/u/e71990ada2fd">简书·BY</a></li>
+                    
+                        <li><a href="https://apple.com">Apple</a></li>
+                    
+                        <li><a href="https://developer.apple.com/">Apple Developer</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "qiubaiying";
+    var disqus_identifier = "";
+    var disqus_url = "http://localhost:4000/backup/2016-10-26-BYPhoneNumTF/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    <!-- add jianshu add target = "_blank" to <a> by BY -->
+                    
+                            <li>
+                                <a target="_blank" href="https://www.jianshu.com/u/e71990ada2fd">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa  fa-stack-1x fa-inverse">简</i>
+                                    </span>
+                                </a>
+                            </li>
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/dragonofac">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+
+
+                    
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/baiying.qiu.7">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/dragonofac">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Daniel's Blog 2017
+                    <br>
+                    Theme on <a href="https://github.com/dragonofac/dragonofac.github.io.git">GitHub</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=dragonofac&repo=dragonofac.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Service Worker -->
+
+<script type="text/javascript">
+    if(navigator.serviceWorker){
+        // For security reasons, a service worker can only control the pages that are in the same directory level or below it. That's why we put sw.js at ROOT level.
+        navigator.serviceWorker
+            .register('/sw.js')
+            .then((registration) => {console.log('Service Worker Registered. ', registration)})
+            .catch((error) => {console.log('ServiceWorker registration failed: ', error)})
+    }
+</script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/ 
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers   
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-90855596-1';
+    var _gaDomain = 'auto';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'b50bf2b12b5338a1845e33832976fd68';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;    
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/img/apple-touch-icon.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
