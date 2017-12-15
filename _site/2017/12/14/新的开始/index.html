@@ -10,7 +10,7 @@
     <meta name="keywords"  content="到处挖坑的小智 | Artificial Intelligence | EndPoint | Programmer">
     <meta name="theme-color" content="#000000">
     
-    <title>大家好，我叫Daniel - 明智的博客 | About Daniel</title>
+    <title>大家好，我叫Daniel - 小智的博客 | Daniel</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -22,7 +22,7 @@
     <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="http://localhost:4000/2017/10/04/Good-Day/">
+    <link rel="canonical" href="http://localhost:4000/2017/12/14/%E6%96%B0%E7%9A%84%E5%BC%80%E5%A7%8B/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -72,7 +72,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">从此以后</a>
+            <a class="navbar-brand" href="/">小智|主页</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -173,11 +173,7 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/#iOS" title="iOS">iOS</a>
-                        
-                        <a class="tag" href="/tags/#Swift" title="Swift">Swift</a>
-                        
-                        <a class="tag" href="/tags/#GCD" title="GCD">GCD</a>
+                        <a class="tag" href="/tags/#daniel" title="daniel">daniel</a>
                         
                     </div>
                     <h1>大家好，我叫Daniel</h1>
@@ -185,7 +181,7 @@
                     
                     <h2 class="subheading">2017.12.13 我决定换个新英文名，就叫Daniel.</h2>
                     
-                    <span class="meta">Posted by Daniel on October 4, 2017</span>
+                    <span class="meta">Posted by Daniel on December 14, 2017</span>
                 </div>
             </div>
         </div>
@@ -203,82 +199,9 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-				<h2 id="dispatchqueue">DispatchQueue</h2>
+				<h2 id="新的开始">新的开始</h2>
 
-<p>Swift 中，对 GCD 语法进行了彻底改写。引入了 <code class="highlighter-rouge">DispatchQueue</code> 这个类。</p>
-
-<p>先来看看在一个异步队列中读取数据， 然后再返回主线程更新 UI， 这种操作在新的 Swift 语法中是这样的：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">DispatchQueue</span><span class="o">.</span><span class="nf">global</span><span class="p">()</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
-
-    <span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
-
-		<span class="c1">// 更新UI操作</span>
-
-    <span class="p">}</span>
-
-<span class="p">}</span>
-
-</code></pre></div></div>
-
-<p><code class="highlighter-rouge">DispatchQueue.global().async</code> 相当于使用全局队列进行异步操作。然后在调用 <code class="highlighter-rouge">DispatchQueue.main.async</code> 使用主线程更新相应的 UI 内容。</p>
-
-<h2 id="优先级">优先级</h2>
-
-<p>新的 GCD 引入了 QoS (Quality of Service) 的概念。</p>
-
-<p>先看看下面的代码：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">DispatchQueue</span><span class="o">.</span><span class="nf">global</span><span class="p">(</span><span class="nv">qos</span><span class="p">:</span> <span class="o">.</span><span class="n">userInitiated</span><span class="p">)</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
-
-<span class="p">}</span>
-
-</code></pre></div></div>
-
-<p>QoS 对应的就是 <code class="highlighter-rouge">Global Queue</code> 中的优先级。 其优先级由最低的 <code class="highlighter-rouge">background</code> 到最高的 <code class="highlighter-rouge">userInteractive</code> 共五个，还有一个未定义的 <code class="highlighter-rouge">unspecified</code>。</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">background</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">utility</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="kd">let</span> <span class="err">`</span><span class="k">default</span><span class="err">`</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">userInitiated</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">userInteractive</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">unspecified</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-</code></pre></div></div>
-
-<h2 id="自定义-queue">自定义 Queue</h2>
-
-<p>除了直接使用 <code class="highlighter-rouge">DispatchQueue.global().async</code> 这种封装好的代码外，还可以通过<code class="highlighter-rouge">DispatchWorkItem</code> 自定义队列的优先级，特性：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="nv">queue</span> <span class="o">=</span> <span class="kt">DispatchQueue</span><span class="p">(</span><span class="nv">label</span><span class="p">:</span> <span class="s">"swift_queue"</span><span class="p">)</span>
-<span class="k">let</span> <span class="nv">dispatchworkItem</span> <span class="o">=</span> <span class="kt">DispatchWorkItem</span><span class="p">(</span><span class="nv">qos</span><span class="p">:</span> <span class="o">.</span><span class="n">userInitiated</span><span class="p">,</span> <span class="nv">flags</span><span class="p">:</span> <span class="o">.</span><span class="n">inheritQoS</span><span class="p">)</span> <span class="p">{</span>
-    
-<span class="p">}</span>
-<span class="n">queue</span><span class="o">.</span><span class="nf">async</span><span class="p">(</span><span class="nv">execute</span><span class="p">:</span> <span class="n">dispatchworkItem</span><span class="p">)</span>
-
-</code></pre></div></div>
-<h2 id="gcd定时器">GCD定时器</h2>
-
-<p>Swift 中 <code class="highlighter-rouge">dispatch_time</code>的用法改成了：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="nv">delay</span> <span class="o">=</span> <span class="kt">DispatchTime</span><span class="o">.</span><span class="nf">now</span><span class="p">()</span> <span class="o">+</span> <span class="o">.</span><span class="nf">seconds</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
-<span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="nf">asyncAfter</span><span class="p">(</span><span class="nv">deadline</span><span class="p">:</span> <span class="n">delay</span><span class="p">)</span> <span class="p">{</span> 
-    
-<span class="p">}</span>
-</code></pre></div></div>
-
-<p>相较与OC来说更易读了：</p>
-
-<div class="language-objc highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">let</span> <span class="n">dispatch_time</span> <span class="o">=</span> <span class="n">dispatch_time</span><span class="p">(</span><span class="n">DISPATCH_TIME_NOW</span><span class="p">,</span> <span class="n">Int64</span><span class="p">(</span><span class="mi">60</span> <span class="o">*</span> <span class="n">NSEC_PER_SEC</span><span class="p">))</span>
-</code></pre></div></div>
-
-<ul>
-  <li>参考 <a href="https://www.swiftcafe.io/2016/10/16/swift-gcd/">GCD 在 Swift 3 中的玩儿法</a></li>
-</ul>
+<p>眼下2018即将到来了，我亦即将步入人生新的轨迹。新的一年，我打算取个地道的洋名儿 – <code class="highlighter-rouge">Daniel</code> 。</p>
 
 
                 <hr style="visibility: hidden;">
@@ -289,12 +212,19 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2017/10/04/GCD-%E5%9C%A8-Swift-%E4%B8%AD%E7%9A%84%E7%94%A8%E6%B3%95/" data-toggle="tooltip" data-placement="top" title="GCD 在 Swift 中的用法">
+                        <a href="/2017/09/11/Swift-4-%E6%96%B0%E7%89%B9%E6%80%A7/" data-toggle="tooltip" data-placement="top" title="Swift 4 新特性">
                         Previous<br>
-                        <span>GCD 在 Swift 中的用法</span>
+                        <span>Swift 4 新特性</span>
                         </a>
                     </li>
                     
+                    
+                    <li class="next">
+                        <a href="/2017/12/15/%E5%B7%85%E5%B3%B0%E4%B9%8B%E8%B7%AF/" data-toggle="tooltip" data-placement="top" title="巅峰之路">
+                        Next<br>
+                        <span>巅峰之路</span>
+                        </a>
+                    </li>
                     
                 </ul>
 
@@ -342,21 +272,11 @@
                     <div class="tags">
         				
                             
-                				<a href="/tags/#iOS" title="iOS" rel="3">
-                                    iOS
-                                </a>
+        				
                             
         				
                             
-                				<a href="/tags/#Swift" title="Swift" rel="3">
-                                    Swift
-                                </a>
-                            
         				
-                            
-                				<a href="/tags/#GCD" title="GCD" rel="2">
-                                    GCD
-                                </a>
                             
         				
         			</div>
@@ -393,8 +313,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "qiubaiying";
-    var disqus_identifier = "/2017/10/04/Good-Day";
-    var disqus_url = "http://localhost:4000/2017/10/04/Good-Day/";
+    var disqus_identifier = "/2017/12/14/新的开始";
+    var disqus_url = "http://localhost:4000/2017/12/14/%E6%96%B0%E7%9A%84%E5%BC%80%E5%A7%8B/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
@@ -499,7 +419,7 @@
                     
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; 从此以后 2017
+                    Copyright &copy; 小智|主页 2017
                     <br>
                     Theme on <a href="https://github.com/dragonofac/dragonofac.github.io.git">GitHub</a> |
                     <iframe

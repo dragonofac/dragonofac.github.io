@@ -10,7 +10,7 @@
     <meta name="keywords"  content="到处挖坑的小智 | Artificial Intelligence | EndPoint | Programmer">
     <meta name="theme-color" content="#000000">
     
-    <title>GCD 在 Swift 中的用法 - 明智的博客 | About Daniel</title>
+    <title>巅峰之路 - 小智的博客 | Daniel</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -22,7 +22,7 @@
     <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="http://localhost:4000/2017/10/04/GCD-%E5%9C%A8-Swift-%E4%B8%AD%E7%9A%84%E7%94%A8%E6%B3%95/">
+    <link rel="canonical" href="http://localhost:4000/2017/12/15/%E5%B7%85%E5%B3%B0%E4%B9%8B%E8%B7%AF/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -72,7 +72,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">从此以后</a>
+            <a class="navbar-brand" href="/">小智|主页</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -173,19 +173,15 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                        <a class="tag" href="/tags/#iOS" title="iOS">iOS</a>
-                        
-                        <a class="tag" href="/tags/#Swift" title="Swift">Swift</a>
-                        
-                        <a class="tag" href="/tags/#GCD" title="GCD">GCD</a>
+                        <a class="tag" href="/tags/#interview" title="interview">interview</a>
                         
                     </div>
-                    <h1>GCD 在 Swift 中的用法</h1>
+                    <h1>巅峰之路</h1>
                     
                     
-                    <h2 class="subheading"></h2>
+                    <h2 class="subheading">秋季，离人愁，离愿更愁</h2>
                     
-                    <span class="meta">Posted by BY on October 4, 2017</span>
+                    <span class="meta">Posted by Daniel on December 15, 2017</span>
                 </div>
             </div>
         </div>
@@ -203,82 +199,154 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-				<h2 id="dispatchqueue">DispatchQueue</h2>
+				<h2 id="前言">前言</h2>
 
-<p>Swift 中，对 GCD 语法进行了彻底改写。引入了 <code class="highlighter-rouge">DispatchQueue</code> 这个类。</p>
+<p>我的目标只有AT，也知道AT的面试难度绝对非泛泛之辈。历经秋季发生的种种失望和彷徨后，我决定采取行动了。</p>
 
-<p>先来看看在一个异步队列中读取数据， 然后再返回主线程更新 UI， 这种操作在新的 Swift 语法中是这样的：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">DispatchQueue</span><span class="o">.</span><span class="nf">global</span><span class="p">()</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
-
-    <span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
-
-		<span class="c1">// 更新UI操作</span>
-
-    <span class="p">}</span>
-
-<span class="p">}</span>
-
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>这是一篇经验之谈，不会仔细聊具体内容等。请自行Google具体概念的细节。
 </code></pre></div></div>
 
-<p><code class="highlighter-rouge">DispatchQueue.global().async</code> 相当于使用全局队列进行异步操作。然后在调用 <code class="highlighter-rouge">DispatchQueue.main.async</code> 使用主线程更新相应的 UI 内容。</p>
+<h2 id="预准备">预准备</h2>
+<p>6月份前后，已经有不少猎头找到我，我也留下他们的联系方式，高水平的猎头往往能提供有价值的岗位，例如：<code class="highlighter-rouge">深圳蚂蚁金服</code>、<code class="highlighter-rouge">北京Face++</code>、<code class="highlighter-rouge">阿里摩达学院</code>等。
+接触某些猎头后，我提前让他们提供我感兴趣的岗位的<code class="highlighter-rouge">Job Description</code>，以便我做对应的准备。</p>
 
-<h2 id="优先级">优先级</h2>
+<p>在面试预准备阶段，结合我对不同公司的风格和一些岗位的JD，我给自己规划了几个大概的方向：<code class="highlighter-rouge">C++基础语法</code>，<code class="highlighter-rouge">Java NIO</code>，<code class="highlighter-rouge">Java基础</code>，<code class="highlighter-rouge">并发编程</code>，<code class="highlighter-rouge">系统架构设计</code>，<code class="highlighter-rouge">开源架构/组件</code>，<code class="highlighter-rouge">Linux 
+Shell</code>等。</p>
 
-<p>新的 GCD 引入了 QoS (Quality of Service) 的概念。</p>
+<p><code class="highlighter-rouge">系统架构设计</code>是一块非常庞大的部分，就我参与过的项目里，涵盖了两种类型的后端服务：<code class="highlighter-rouge">数据读写服务</code>，<code class="highlighter-rouge">交易系统</code>。
+不同类型的后端服务的设计需求也尽然不同：<code class="highlighter-rouge">数据读写服务</code>的要求是<code class="highlighter-rouge">高性能读写</code>、<code class="highlighter-rouge">系统高可用</code>、<code class="highlighter-rouge">高容灾能力</code>、<code class="highlighter-rouge">数据持久化</code>、<code class="highlighter-rouge">异地多活</code>等；
+而对于典型的<code class="highlighter-rouge">交易系统</code>，设计要求则需要解决诸多典型的领域问题：<code class="highlighter-rouge">分布式唯一递增ID方案设计</code>、<code class="highlighter-rouge">支付安全性设计</code>、<code class="highlighter-rouge">支付架构</code>、<code class="highlighter-rouge">订单幂等性</code>、<code class="highlighter-rouge">超时重试</code>、<code class="highlighter-rouge">状态机转移</code>等。</p>
 
-<p>先看看下面的代码：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">DispatchQueue</span><span class="o">.</span><span class="nf">global</span><span class="p">(</span><span class="nv">qos</span><span class="p">:</span> <span class="o">.</span><span class="n">userInitiated</span><span class="p">)</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
-
-<span class="p">}</span>
-
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>项目的经验总结十分重要。
 </code></pre></div></div>
 
-<p>QoS 对应的就是 <code class="highlighter-rouge">Global Queue</code> 中的优先级。 其优先级由最低的 <code class="highlighter-rouge">background</code> 到最高的 <code class="highlighter-rouge">userInteractive</code> 共五个，还有一个未定义的 <code class="highlighter-rouge">unspecified</code>。</p>
+<p>值得一提的是<code class="highlighter-rouge">Java NIO</code>，在我接触过的业务开发里，并不需要直接使用<code class="highlighter-rouge">java nio</code>，作为程序底层编程基础部分、已被各种常用框架屏蔽掉的Java NewIO，在面试中到底是多重要呢？
+就我后来面试的经历中，「了解/熟悉/精通Java NIO」会成为一个十分重要的加分项，被问询到的概率也很高。当然，这还是会与具体的<code class="highlighter-rouge">JD</code>挂钩的。在很早前，其中一位猎头提供的JD里有明确的熟悉<code class="highlighter-rouge">Netty</code>、<code class="highlighter-rouge">Java NIO</code>优先，
+因此，在面试的预准备阶段，我特意花了2周啃<code class="highlighter-rouge">Thrift</code>JAVA版本的实现以及<code class="highlighter-rouge">Netty</code>的实现，主要是NIO部分。RPC是一个专业领域，除了NIO，还包括了<code class="highlighter-rouge">序列化</code>、<code class="highlighter-rouge">Socket编程</code>、<code class="highlighter-rouge">TCP粘包/拆包</code>等诸多领域问题。
+就<code class="highlighter-rouge">rpc</code>相关，我看完了<code class="highlighter-rouge">MtThrift</code>的实现，<code class="highlighter-rouge">Mtthrift</code>主要包括了 类和接口代理模式、均衡负载、NIO、MTraceBinary协议实现、高可用功能如过载保护等。NIO部分可以参考<code class="highlighter-rouge">React设计模式</code>，颇有收益。</p>
 
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">background</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">utility</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="kd">let</span> <span class="err">`</span><span class="k">default</span><span class="err">`</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">userInitiated</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">userInteractive</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
-
-<span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">unspecified</span><span class="p">:</span> <span class="kt">DispatchQoS</span>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>NIO是后端工程师必须了解甚至掌握的。
 </code></pre></div></div>
 
-<h2 id="自定义-queue">自定义 Queue</h2>
+<p>大约，我花了4天的时间复习了一遍「亿级流量网站架构核心技术」这本书。身边有朋友吐槽这本书质量略差，这里不予置评。我带有十分明确的目标去看：在这本书里我主要是要吸取了一些非常重要的概念，包括如何支持高并发、如何构建高可用。
+看完一本书的目标并非能让你在短时间内编出一个虚构的、厉害的项目经历，而是通过这种整体性的总结，回顾以前的项目，找出以前的不足，总结以前参与过的项目里的问题、积累经验、设计优化等诸多地方。</p>
 
-<p>除了直接使用 <code class="highlighter-rouge">DispatchQueue.global().async</code> 这种封装好的代码外，还可以通过<code class="highlighter-rouge">DispatchWorkItem</code> 自定义队列的优先级，特性：</p>
+<h2 id="准备篇-1-知识深化">准备篇 #1 知识深化</h2>
+<p>大家一定注意到，刚才的说到的只是预准备。其中<code class="highlighter-rouge">系统架构设计</code>部分，是我在后来做的总结（在预备期我并没总结得这么全）。有了一个大概的预备期，接下来，这才是巅峰之路的启程。
+我准备的大概思路大概是：Java基础为主，基础以并发为主、JVM为辅，逐渐（边面试边攻克）解决项目部分，最后再攻克开源部分。</p>
 
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="nv">queue</span> <span class="o">=</span> <span class="kt">DispatchQueue</span><span class="p">(</span><span class="nv">label</span><span class="p">:</span> <span class="s">"swift_queue"</span><span class="p">)</span>
-<span class="k">let</span> <span class="nv">dispatchworkItem</span> <span class="o">=</span> <span class="kt">DispatchWorkItem</span><span class="p">(</span><span class="nv">qos</span><span class="p">:</span> <span class="o">.</span><span class="n">userInitiated</span><span class="p">,</span> <span class="nv">flags</span><span class="p">:</span> <span class="o">.</span><span class="n">inheritQoS</span><span class="p">)</span> <span class="p">{</span>
-    
-<span class="p">}</span>
-<span class="n">queue</span><span class="o">.</span><span class="nf">async</span><span class="p">(</span><span class="nv">execute</span><span class="p">:</span> <span class="n">dispatchworkItem</span><span class="p">)</span>
-
-</code></pre></div></div>
-<h2 id="gcd定时器">GCD定时器</h2>
-
-<p>Swift 中 <code class="highlighter-rouge">dispatch_time</code>的用法改成了：</p>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="nv">delay</span> <span class="o">=</span> <span class="kt">DispatchTime</span><span class="o">.</span><span class="nf">now</span><span class="p">()</span> <span class="o">+</span> <span class="o">.</span><span class="nf">seconds</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
-<span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="nf">asyncAfter</span><span class="p">(</span><span class="nv">deadline</span><span class="p">:</span> <span class="n">delay</span><span class="p">)</span> <span class="p">{</span> 
-    
-<span class="p">}</span>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>请坐稳扶好，我准备开车了。
 </code></pre></div></div>
 
-<p>相较与OC来说更易读了：</p>
+<h3 id="11-并发编程篇">1.1 并发编程篇</h3>
+<p>经历过那么多Java岗位的面试，<code class="highlighter-rouge">并发</code>无疑是热门的基础问题Top 1。在准备<code class="highlighter-rouge">并发</code>这部分内容时，我使用得不多，对于那时的我来很迷茫，也没有人指点在哪个方向准备起：
+这个究竟是个经验的问题，有多少功力也不是靠背书读概念就积累起来的。但是总不能坐以待毙吧？</p>
 
-<div class="language-objc highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">let</span> <span class="n">dispatch_time</span> <span class="o">=</span> <span class="n">dispatch_time</span><span class="p">(</span><span class="n">DISPATCH_TIME_NOW</span><span class="p">,</span> <span class="n">Int64</span><span class="p">(</span><span class="mi">60</span> <span class="o">*</span> <span class="n">NSEC_PER_SEC</span><span class="p">))</span>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>你肯定想问我，你还没面试怎么就知道「并发」是top1热门？
+告诉你，面试启动之前，我找了些同事沟通，以及结合百度做参考的。
 </code></pre></div></div>
 
-<ul>
-  <li>参考 <a href="https://www.swiftcafe.io/2016/10/16/swift-gcd/">GCD 在 Swift 3 中的玩儿法</a></li>
-</ul>
+<h4 id="112-volatile关键字">1.1.2 volatile关键字</h4>
+<p>有人提点了我一些基础的内容，没错，就是<code class="highlighter-rouge">Java并发</code>的三大基础之一，<code class="highlighter-rouge">volatile</code>修饰符。</p>
+
+<p><strong><code class="highlighter-rouge">volatile</code>的基础要点:</strong></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. 有哪三大特性？
+2. 如何保证可见性？
+3. 为什么不保证操作原子性？
+4. 禁止指令重排序的原理？
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>注意：并发是java top1问题，volatile是并发的top1问题
+</code></pre></div></div>
+
+<h4 id="113-内存屏障内存模型">1.1.3 内存屏障/内存模型</h4>
+<p>如果你在volatile上提到了指令重排序，面试官很有可能会问到内存屏障相关问题，内存屏障的实质就是将底层CPU指令做了顺序限制。有兴趣可以了解一下相关的博客。
+<strong><code class="highlighter-rouge">JMM的原理要点</code></strong></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. JMM(Java Memory Model)是什么？
+2. 原理是什么？
+</code></pre></div></div>
+
+<h4 id="114-线程状态和monitor">1.1.4 线程状态和Monitor</h4>
+<p>线程状态比较容易理解，但要注意一点：操作系统的线程状态和Java的线程状态是有区别的。
+操作系统的线程状态有5个：新建、就绪、运行、阻塞、结束。而Java线程状态则有6种：<code class="highlighter-rouge">new</code>、<code class="highlighter-rouge">running</code>、<code class="highlighter-rouge">blocking</code>、<code class="highlighter-rouge">time wait</code>、<code class="highlighter-rouge">runnable</code>、<code class="highlighter-rouge">dead</code>。
+关于Java的线程状态大有学问：</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. Java线程的time wait和blocking区别是什么？
+2. 线程状态之间的转移条件？
+3. 怎么理解线程Monitor
+</code></pre></div></div>
+<p>Java线程状态转移的内容在<code class="highlighter-rouge">Thread.java</code>里做了十分详细的注释，建议没看过的看一下，对于打扎实Java多线程编程基础有一定帮助。
+线程状态及转移比较基础，面试问到的频率比较低。线程monitor是一个概念，有必要理解一下。</p>
+
+<h4 id="115-并发集合">1.1.5 并发集合</h4>
+<p>基础扎实的同学一定听过<code class="highlighter-rouge">JUC</code>，没错，并发集合说的就是<code class="highlighter-rouge">java.util.concurrent</code>的子集（JUC）。</p>
+
+<p>并发集合主要包括几个经典的集合：<code class="highlighter-rouge">ConcurrentHashMap</code>，<code class="highlighter-rouge">CopyOnWriteArrayList</code>，<code class="highlighter-rouge">LinkedBlockingQueue</code>。
+<code class="highlighter-rouge">ConcurrentHashMap</code>是比较常用的数据结构，必须掌握.
+<code class="highlighter-rouge">LinkedBlockingQueue</code>是生产者/消费者模式的实现，也是线程池默认队列，也必须掌握.
+<code class="highlighter-rouge">CopyOnWriteArrayList</code>建议掌握，问得比较少.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1.`ConcurrentHashMap` 在JDK1.6采用了分段+数组+链表，其中，段继承了重入锁
+2.`ConcurrentHashMap` 在JDK1.7则采用了无锁cas代替了重入锁
+3.`ConcurrentHashMap` 在JDK1.8则是将链表部分做了优化，在链表长度大于8时升级为红黑树
+4.`LinkedBlockingQueue` 本身就是生产者/消费者模式的实现
+</code></pre></div></div>
+
+<p>LinkedBlockingQueue提供了好几个 <code class="highlighter-rouge">生产</code> 和 <code class="highlighter-rouge">消费</code> 的方法，它们的区别在于获取<code class="highlighter-rouge">putLock</code>和<code class="highlighter-rouge">takeLock</code>时，采用的重入锁的不同<code class="highlighter-rouge">lock</code>方法：<code class="highlighter-rouge">lock()</code>和<code class="highlighter-rouge">lockInterupt()
+</code>。详情参考JDK代码，深刻理解这部分代码，对生产者/消费者模型的理解十分有帮助。</p>
+
+<p>上面都是常用/常见的并发/同步集合。除了集合，还有常用的辅助类:<code class="highlighter-rouge">CyclicBarrier</code>，<code class="highlighter-rouge">CountDownLaunch</code>。在代码里我只用过<code class="highlighter-rouge">CountDownLaunch</code>，属于比较常用和必须掌握的基础。</p>
+
+<h4 id="116-线程池">1.1.6 线程池</h4>
+<p>线程池大家都很熟悉，通常用于处理异步事件。线程池也是面试的高频热点。根据我不同的面试体验，我对线程池这部的内容体会是，每次面试都让我感到我对线程池的认知是不足的。
+建议大家读一下线程池的代码，包含几个要点，也是我面试遇到的：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1.keep_alive参数的作用？
+2.core_size/largest_size含义？
+3.线程池工作流程？
+4.线程的生命周期？
+</code></pre></div></div>
+
+<p>上面是线程池的高频问题，大家可以充分准备一下。另外值得一提的是<code class="highlighter-rouge">线程池的状态</code>，状态的转移比较难理解，在面试的时候也很少出现。但是理解线程池的状态转移有助于对线程池的理解加深。
+我在学习线程池的时候主要是几个方面：</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1.worker的实现，生命周期
+2.新创建线程的流程
+3.带返回值的task的.submit(Runnable)方法的实现原理
+</code></pre></div></div>
+
+<p>线程池不敢说学得很深，不好在大家面前班门弄斧。多多指教！</p>
+
+<h4 id="117-synchronized和reetrantlock">1.1.7 Synchronized和ReetrantLock</h4>
+<p>这个题目基本不用多少，高频题目。它们关键区别在于synchronized是基于字节码实现的，lock是基于信号量实现的。在面试的时候，这两者的尽量讲详细点。
+除了实现上，lock还提供了<code class="highlighter-rouge">tryLock()</code>和<code class="highlighter-rouge">lockInterupt()</code>方法。这两方法的实现细节见代码详情。</p>
+
+<p><code class="highlighter-rouge">ReetrantLock</code>的默认Lock是非公平锁。<code class="highlighter-rouge">Lock</code>还提供了公平锁。这两者的区别在于获取锁的时候是否进入队列。这是必懂知识点。
+而它的实现原理，是在AQS，即<code class="highlighter-rouge">AbstractQueuedSynchronizer</code></p>
+<h4 id="118-abstractqueuedsynchronizer">1.1.8 AbstractQueuedSynchronizer</h4>
+<p>高端面试题会出现这个同步器的原理问题。在阿里的一面就问到了这个。主要是介绍一下<code class="highlighter-rouge">AbstractQueuedSynchronizer</code>的状态唤醒实现，锁实现原理。</p>
+
+<h3 id="12-开源框架">#1.2 开源框架</h3>
+<p>并发是我准备的很大一部分，我的简历策略是扬长避短，将熟悉的东西、学会的东西写上去，不懂的只字不提。所以再后来我找些同事帮我review简历的时候大家都说简历写得很简单。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>我略愁，没有把握的我是不会写的。
+</code></pre></div></div>
+
+<h4 id="121-jetty">1.2.1 Jetty</h4>
+<p>我虽然准备了，也啃了jetty的部分代码，但是基本不会问，参考价值不大。因为面试官也不一定有相关的技术栈。</p>
+
+<h3 id="13-shell编程">#1.3 Shell编程</h3>
+<p>事实上，java的启动是由一句<code class="highlighter-rouge">java -jar bootstrap.java</code> balala 等一句命令执行的，我特意在面试时看了一下发布的脚本。作为基础的基础，没有人问，但你要会。</p>
+
+<h4 id="131-awk">1.3.1 awk</h4>
+<p>不用解释太多，用awk统计一下QPS。</p>
+
+<h4 id="132-sed">1.3.2 sed</h4>
+<p>如何将多个文本的关键字快速替换？你还是懂的。</p>
+
+<p>当然，shell编程远不止这些，我特意翻回了我以前写过的脚本shell复习了<code class="highlighter-rouge">sed</code>,<code class="highlighter-rouge">awk</code>等一些常用的命令来复习。掌握这些还是很有必要的，<code class="highlighter-rouge">awk</code>的考察率超过了<code class="highlighter-rouge">60%</code>。</p>
+
+<h2 id="准备篇-2-知识巩固">准备篇 #2 知识巩固</h2>
+<p>你没有看错，在准备#1篇里，我基本只准备了<code class="highlighter-rouge">java多线程</code>。但是从<code class="highlighter-rouge">NIO</code>到<code class="highlighter-rouge">jetty</code>，到<code class="highlighter-rouge">shell</code>，到<code class="highlighter-rouge">多线程编程</code>，我足足从8月底准备到了10月份。匆匆准备完毕后，10月9号，我就投递了第一份简历了。</p>
+
+<p>为了大家更容易理解，我就不穿插<code class="highlighter-rouge">知识巩固</code>和<code class="highlighter-rouge">面试1</code>这两部分的内容。准备篇#2将直接介绍面试中遇到的问题，并作为知识巩固，我是如何操作的。</p>
 
 
                 <hr style="visibility: hidden;">
@@ -289,19 +357,12 @@
                 <ul class="pager">
                     
                     <li class="previous">
-                        <a href="/2017/09/11/Swift-4-%E6%96%B0%E7%89%B9%E6%80%A7/" data-toggle="tooltip" data-placement="top" title="Swift 4 新特性">
+                        <a href="/2017/12/14/%E6%96%B0%E7%9A%84%E5%BC%80%E5%A7%8B/" data-toggle="tooltip" data-placement="top" title="大家好，我叫Daniel">
                         Previous<br>
-                        <span>Swift 4 新特性</span>
-                        </a>
-                    </li>
-                    
-                    
-                    <li class="next">
-                        <a href="/2017/10/04/Good-Day/" data-toggle="tooltip" data-placement="top" title="大家好，我叫Daniel">
-                        Next<br>
                         <span>大家好，我叫Daniel</span>
                         </a>
                     </li>
+                    
                     
                 </ul>
 
@@ -349,21 +410,11 @@
                     <div class="tags">
         				
                             
-                				<a href="/tags/#iOS" title="iOS" rel="3">
-                                    iOS
-                                </a>
+        				
                             
         				
                             
-                				<a href="/tags/#Swift" title="Swift" rel="3">
-                                    Swift
-                                </a>
-                            
         				
-                            
-                				<a href="/tags/#GCD" title="GCD" rel="2">
-                                    GCD
-                                </a>
                             
         				
         			</div>
@@ -400,8 +451,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "qiubaiying";
-    var disqus_identifier = "/2017/10/04/GCD-在-Swift-中的用法";
-    var disqus_url = "http://localhost:4000/2017/10/04/GCD-%E5%9C%A8-Swift-%E4%B8%AD%E7%9A%84%E7%94%A8%E6%B3%95/";
+    var disqus_identifier = "/2017/12/15/巅峰之路";
+    var disqus_url = "http://localhost:4000/2017/12/15/%E5%B7%85%E5%B3%B0%E4%B9%8B%E8%B7%AF/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
@@ -506,7 +557,7 @@
                     
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; 从此以后 2017
+                    Copyright &copy; 小智|主页 2017
                     <br>
                     Theme on <a href="https://github.com/dragonofac/dragonofac.github.io.git">GitHub</a> |
                     <iframe

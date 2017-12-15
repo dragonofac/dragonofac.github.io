@@ -1,6 +1,9 @@
 # Site settings
-title: 从此以后
-SEOTitle: 明智的博客 | About Daniel
+title: 小智|主页
+#主页的Title
+ptitle: This's Daniel
+#浏览器页标题
+SEOTitle: 小智的博客 | Daniel
 header-img: img/soho 3.jpg
 email: 562462894@gmail.com
 description: "为自己留退路的人，最终都走在退路上。"
